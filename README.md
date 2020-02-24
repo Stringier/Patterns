@@ -1,2 +1,3 @@
-# Patterns
+# Stringier.Patterns [![Nuget](https://img.shields.io/nuget/dt/Stringier.Patterns.svg?label=Patterns&logo=nuget)](https://www.nuget.org/packages/Stringier.Patterns/) [![Nuget](https://img.shields.io/nuget/dt/Stringier.Patterns.FSharp?label=F%23%20&logo=nuget)](https://www.nuget.org/packages/Stringier.Patterns.FSharp/) [![Nuget](https://img.shields.io/nuget/dt/Stringier.Patterns.MSTest?label=MSTest&logo=nuget)](https://www.nuget.org/packages/Stringier.Patterns.MSTest/) [![Nuget](https://img.shields.io/nuget/dt/Stringier.Patterns.MSTest?label=NUnit&logo=nuget)](https://www.nuget.org/packages/Stringier.Patterns.NUnit/)
+
 Provides support for pattern matching based parsing
