@@ -20,7 +20,7 @@ namespace Stringier.Patterns.Nodes {
 		/// Initialize a new <see cref="StringLiteral"/> with the given <paramref name="string"/>.
 		/// </summary>
 		/// <param name="string">The <see cref="System.String"/> to parse.</param>
-		internal StringLiteral(String @string) : base(Compare.NoPreference) => String = @string;
+		internal StringLiteral(String @string) : base(Compare.None) => String = @string;
 
 		/// <summary>
 		/// Intialize a new <see cref="StringLiteral"/> with the given <paramref name="string"/>.
@@ -33,7 +33,7 @@ namespace Stringier.Patterns.Nodes {
 		/// Initialize a new <see cref="StringLiteral"/> with the given <paramref name="span"/>.
 		/// </summary>
 		/// <param name="span">The <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/> to parse.</param>
-		internal StringLiteral(ReadOnlySpan<Char> span) : base(Compare.NoPreference) => String = span.ToString();
+		internal StringLiteral(ReadOnlySpan<Char> span) : base(Compare.None) => String = span.ToString();
 
 		/// <summary>
 		/// Intialize a new <see cref="StringLiteral"/> with the given <paramref name="span"/>.
@@ -122,7 +122,7 @@ namespace Stringier.Patterns.Nodes {
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
 		internal override Pattern Concatenate(Char right) {
 			switch (ComparisonType) {
-			case Compare.NoPreference:
+			case Compare.None:
 				return new StringLiteral(String + right.ToString());
 			default:
 				return new Concatenator(this, new CharLiteral(right));
@@ -139,7 +139,7 @@ namespace Stringier.Patterns.Nodes {
 				throw new ArgumentNullException(nameof(right));
 			}
 			switch (ComparisonType) {
-			case Compare.NoPreference:
+			case Compare.None:
 				return new StringLiteral(String + right);
 			default:
 				return new Concatenator(this, new StringLiteral(right));

@@ -158,7 +158,7 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <typeparam name="E">The <see cref="Enum"/> providing names.</typeparam>
 		/// <returns>A new <see cref="Pattern"/> alternating all the names of <typeparamref name="E"/>.</returns>
-		public static Pattern OneOf<E>() where E : Enum => OneOf<E>(Compare.NoPreference);
+		public static Pattern OneOf<E>() where E : Enum => OneOf<E>(Compare.None);
 
 		/// <summary>
 		/// Declares the names of <typeparamref name="E"/> to be alternates of each other; one of them will match.

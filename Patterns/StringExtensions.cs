@@ -289,7 +289,7 @@ namespace Stringier.Patterns {
 			Guard.NotNull(@string, nameof(@string));
 			Guard.NotNull(other, nameof(other));
 			switch (comparisonType) {
-			case Compare.NoPreference:
+			case Compare.None:
 			case Compare.CaseSensitive:
 				return @string.Equals(other, StringComparison.Ordinal);
 			case Compare.CaseInsensitive:
@@ -310,7 +310,7 @@ namespace Stringier.Patterns {
 		internal static Boolean Equals(this String @string, ReadOnlySpan<Char> other, Compare comparisonType) {
 			Guard.NotNull(@string, nameof(@string));
 			switch (comparisonType) {
-			case Compare.NoPreference:
+			case Compare.None:
 			case Compare.CaseSensitive:
 				return @string.Equals(other, StringComparison.Ordinal);
 			case Compare.CaseInsensitive:
@@ -331,7 +331,7 @@ namespace Stringier.Patterns {
 		internal static Boolean Equals(this ReadOnlySpan<Char> span, String other, Compare comparisonType) {
 			Guard.NotNull(other, nameof(other));
 			switch (comparisonType) {
-			case Compare.NoPreference:
+			case Compare.None:
 			case Compare.CaseSensitive:
 				return span.Equals(other, StringComparison.Ordinal);
 			case Compare.CaseInsensitive:
@@ -351,7 +351,7 @@ namespace Stringier.Patterns {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static Boolean Equals(this ReadOnlySpan<Char> span, ReadOnlySpan<Char> other, Compare comparisonType) {
 			switch (comparisonType) {
-			case Compare.NoPreference:
+			case Compare.None:
 			case Compare.CaseSensitive:
 				return span.Equals(other, StringComparison.Ordinal);
 			case Compare.CaseInsensitive:

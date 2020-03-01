@@ -12,7 +12,7 @@ namespace Stringier.Patterns {
 		/// <remarks>
 		/// This is intended to specify "I don't care", or default behavior.
 		/// </remarks>
-		NoPreference = 0b0000_0000,
+		None = 0b0000_0000,
 
 		/// <summary>
 		/// Comparisons should be done with regards to letter casing.

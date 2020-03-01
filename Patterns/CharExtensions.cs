@@ -256,7 +256,7 @@ namespace Stringier.Patterns {
 		/// <returns><c>Compare.CaseSensitive</c> if the value of the <paramref name="other"/> parameter is the same as this char; otherwise, <c>false</c>.</returns>
 		internal static Boolean Equals(this Char @char, Char other, Compare comparisonType) {
 			switch (comparisonType) {
-			case Compare.NoPreference:
+			case Compare.None:
 			case Compare.CaseSensitive:
 				return @char.Equals(other, StringComparison.Ordinal);
 			case Compare.CaseInsensitive:

@@ -20,7 +20,7 @@ namespace Stringier.Patterns.Nodes {
 		/// Initialize a new <see cref="CharLiteral"/> with the given <paramref name="char"/>.
 		/// </summary>
 		/// <param name="char">The <see cref="System.Char"/> to parse.</param>
-		internal CharLiteral(Char @char) : base(Compare.NoPreference) => Char = @char;
+		internal CharLiteral(Char @char) : base(Compare.None) => Char = @char;
 
 		/// <summary>
 		/// Initialize a new <see cref="CharLiteral"/> with the given <paramref name="char"/>.
@@ -106,7 +106,7 @@ namespace Stringier.Patterns.Nodes {
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
 		internal override Pattern Concatenate(Char right) {
 			switch (ComparisonType) {
-			case Compare.NoPreference:
+			case Compare.None:
 				return new StringLiteral(Char.ToString() + right.ToString());
 			default:
 				return new Concatenator(this, new CharLiteral(right));
@@ -123,7 +123,7 @@ namespace Stringier.Patterns.Nodes {
 				throw new ArgumentNullException(nameof(right));
 			}
 			switch (ComparisonType) {
-			case Compare.NoPreference:
+			case Compare.None:
 				return new StringLiteral(Char + right);
 			default:
 				return new Concatenator(this, new StringLiteral(right));
