@@ -21,7 +21,7 @@
 		/// </summary>
 		/// <returns>An empty mutable pattern.</returns>
 		/// <remarks>
-		/// This provides a pattern which mutates in-place, which is dangerous. However, it is required when using the target/jumper system as left-recursion and mutual-recursion are not possible without it. <see cref="Seal"/> should be called when done, to prevent further modification than intended, which can have disasterous consequences.
+		/// This provides a pattern which mutates in-place, which is dangerous. However, it is required when using recursion, which is not possible without it. <see cref="Seal"/> should be called when done, to prevent further modification than intended, which can have disasterous consequences.
 		/// </remarks>
 		public static Pattern Mutable() => new MutablePattern();
 	}

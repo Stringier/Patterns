@@ -19,6 +19,8 @@ namespace Stringier.Patterns {
 
 		#region Alternator
 
+		public static Pattern operator |(Pattern left, Pattern right) => left.Alternate(right);
+
 		/// <summary>
 		/// Declares <paramref name="right"/> to be an alternate of this <see cref="Pattern"/>.
 		/// </summary>
@@ -298,6 +300,8 @@ namespace Stringier.Patterns {
 
 		#region Concatenator
 
+		public static Pattern operator &(Pattern left, Pattern right) => left.Concatenate(right);
+
 		/// <summary>
 		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="right"/> <see cref="Pattern"/>.
 		/// </summary>
@@ -405,6 +409,8 @@ namespace Stringier.Patterns {
 
 		#region Negator
 
+		public static Pattern operator !(Pattern pattern) => pattern.Negate();
+
 		/// <summary>
 		/// Marks this <see cref="Pattern"/> as negated.
 		/// </summary>
@@ -461,6 +467,8 @@ namespace Stringier.Patterns {
 		#endregion
 
 		#region Optor
+
+		public static Pattern operator -(Pattern pattern) => pattern.Optional();
 
 		/// <summary>
 		/// Marks this <see cref="Pattern"/> as optional.
@@ -561,6 +569,8 @@ namespace Stringier.Patterns {
 
 		#region Repeater
 
+		public static Pattern operator *(Pattern pattern, Int32 count) => pattern.Repeat(count);
+
 		/// <summary>
 		/// Marks this <see cref="Pattern"/> as repeating <paramref name="count"/> times.
 		/// </summary>
@@ -571,6 +581,8 @@ namespace Stringier.Patterns {
 		#endregion
 
 		#region Spanner
+
+		public static Pattern operator +(Pattern pattern) => pattern.Span();
 
 		/// <summary>
 		/// Marks this <see cref="Pattern"/> as spanning.
