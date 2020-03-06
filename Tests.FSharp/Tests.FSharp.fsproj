@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+    <GenerateProgramFile>false</GenerateProgramFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="AlternatorTests.fs" />
+    <Compile Include="CaptureTests.fs" />
+    <Compile Include="CheckerTests.fs" />
+    <Compile Include="CompoundPatternTests.fs" />
+    <Compile Include="ConcatenatorTests.fs" />
+    <Compile Include="FuzzerTests.fs" />
+    <Compile Include="LiteralTests.fs" />
+    <Compile Include="MutableTests.fs" />
+    <Compile Include="OptorTests.fs" />
+    <Compile Include="RangerTests.fs" />
+    <Compile Include="RealWorldTests.fs" />
+    <Compile Include="RegexAdapterTests.fs" />
+    <Compile Include="RepeaterTests.fs" />
+    <Compile Include="SourceStateTests.fs" />
+    <Compile Include="SpannerTests.fs" />
+    <Compile Include="StressTests.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="1.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Defender.FSharp\Defender.FSharp.fsproj" />
+    <ProjectReference Include="..\FSharp\FSharp.fsproj" />
+    <ProjectReference Include="..\Gibberish\Gibberish.csproj" />
+    <ProjectReference Include="..\Patterns\Patterns.csproj" />
+  </ItemGroup>
+
+</Project>

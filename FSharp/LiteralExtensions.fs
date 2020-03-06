@@ -9,6 +9,7 @@ module LiteralExtensions =
         static member Literal(value:string) = value.AsPattern()
         static member Literal(value:char) = value.AsPattern()
         static member Literal(value:Capture ref) = (!value).AsPattern()
+        static member Literal(value:System.Text.RegularExpressions.Regex) = value.AsPattern()
         static member With(pattern:String, comparisonType:Compare) = pattern.With(comparisonType)
         static member With(pattern:Char, comparisonType:Compare) = pattern.With(comparisonType)
         static member With(pattern:Capture ref, comparisonType:Compare) = (!pattern).With(comparisonType)

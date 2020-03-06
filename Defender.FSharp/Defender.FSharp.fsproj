@@ -1,9 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
+  <PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<LangVersion>8.0</LangVersion>
-		<Nullable>enable</Nullable>
 		<RootNamespace>Defender</RootNamespace>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -17,20 +15,25 @@
 		<PackageTags>stringier, defender, test, testing, unit test, unit tests, unit testing</PackageTags>
 		<Version>2.3.0</Version>
 		<Description>Provides extensions to Defender for unit testing Patterns</Description>
-		<PackageId>Stringier.Patterns.Defender</PackageId>
+		<PackageId>Stringier.Patterns.Defender.FSharp</PackageId>
 		<Product>Stringier</Product>
-		<PackageIcon>Logo.png</PackageIcon>
+		<PackageIcon>F# Logo.png</PackageIcon>
 	</PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="Library.fs" />
+  </ItemGroup>
+
 	<ItemGroup>
-		<None Include="..\Logo.png" Pack="true" Visible="true" PackagePath="\" />
+		<None Include="..\F# Logo.png" Pack="true" Visible="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Defender.Trials" Version="0.10.0" />
+	  <PackageReference Include="Defender.Claims.FSharp" Version="0.10.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Defender\Defender.csproj" />
 	  <ProjectReference Include="..\Patterns\Patterns.csproj" />
 	</ItemGroup>
 
