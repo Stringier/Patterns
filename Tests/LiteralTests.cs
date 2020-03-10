@@ -36,10 +36,14 @@ namespace Tests {
 
 		[Fact]
 		public void Consume_Rune_FromString() {
+			Source source = new Source("hello");
 			Pattern pattern = new Rune('h');
-			Claim.That(pattern).Consumes("h", "hello");
+			Claim.That(pattern).Consumes("h", ref source);
+			Claim.That("ello").Consumes("ello", ref source);
+			source = new Source("𝄞abc");
 			pattern = new Rune(0x1D11E);
-			Claim.That(pattern).Consumes("𝄞", "𝄞abc");
+			Claim.That(pattern).Consumes("𝄞", ref source);
+			Claim.That("abc").Consumes("abc", ref source);
 		}
 
 		[Fact]
