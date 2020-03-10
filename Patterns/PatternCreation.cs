@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Stringier.Patterns.Nodes;
 using Defender;
 
@@ -7,6 +8,8 @@ namespace Stringier.Patterns {
 		#region Literals
 
 		public static implicit operator Pattern(Char @char) => new CharLiteral(@char);
+
+		public static implicit operator Pattern(Rune rune) => new RuneLiteral(rune);
 
 		public static implicit operator Pattern(String @string) {
 			Guard.NotNull(@string, nameof(@string));
@@ -37,6 +40,13 @@ namespace Stringier.Patterns {
 		/// <param name="right">The <see cref="Char"/> to check if this <see cref="Pattern"/> does not match.</param>
 		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
 		internal virtual Pattern Alternate(Char right) => new Alternator(this, new CharLiteral(right));
+
+		/// <summary>
+		/// Declares <paramref name="right"/> to be an alternate of this <see cref="Pattern"/>.
+		/// </summary>
+		/// <param name="right">The <see cref="Rune"/> to check if this <see cref="Pattern"/> does not match.</param>
+		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
+		internal virtual Pattern Alternate(Rune right) => new Alternator(this, new RuneLiteral(right));
 
 		/// <summary>
 		/// Declares <paramref name="right"/> to be an alternate of this <see cref="Pattern"/>.
@@ -88,6 +98,13 @@ namespace Stringier.Patterns {
 		/// <param name="other">The <see cref="Char"/> to check if this <see cref="Pattern"/> does not match</param>
 		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
 		public virtual Pattern Or(Char other) => Alternate(other);
+
+		/// <summary>
+		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
+		/// </summary>
+		/// <param name="other">The <see cref="Rune"/> to check if this <see cref="Pattern"/> does not match</param>
+		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
+		public virtual Pattern Or(Rune other) => Alternate(other);
 
 		/// <summary>
 		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
@@ -203,15 +220,6 @@ namespace Stringier.Patterns {
 		}
 
 		/// <summary>
-		/// Use the <paramref name="check"/> to represent a single character.
-		/// </summary>
-		/// <param name="name">Name to display this pattern as.</param>
-		/// <param name="check">A <see cref="Func{T, TResult}"/> to validate the character.</param>
-		/// <returns></returns>
-		[Obsolete("Remove the name parameter as it's no longer used.")]
-		public static Pattern Check(String name, Func<Char, Boolean> check) => Check(check);
-
-		/// <summary>
 		/// Use the specified <paramref name="headCheck"/>, <paramref name="bodyCheck"/>, and <paramref name="tailCheck"/> to represent a variable length string. The head and tail are only present once, with the body being repeatable.
 		/// </summary>
 		/// <param name="name">Name to display this pattern as.</param>
@@ -225,17 +233,6 @@ namespace Stringier.Patterns {
 			Guard.NotNull(tailCheck, nameof(tailCheck));
 			return new StringChecker(headCheck, bodyCheck, tailCheck);
 		}
-
-		/// <summary>
-		/// Use the specified <paramref name="headCheck"/>, <paramref name="bodyCheck"/>, and <paramref name="tailCheck"/> to represent a variable length string. The head and tail are only present once, with the body being repeatable.
-		/// </summary>
-		/// <param name="name">Name to display this pattern as.</param>
-		/// <param name="headCheck">A <see cref="Func{T, TResult}"/> to validate the head.</param>
-		/// <param name="bodyCheck">A <see cref="Func{T, TResult}"/> to validate the body, which may repeat.</param>
-		/// <param name="tailCheck">A <see cref="Func{T, TResult}"/> to validate the tail.</param>
-		/// <returns></returns>
-		[Obsolete("Remove the name parameter as it's no longer used.")]
-		public static Pattern Check(String name, Func<Char, Boolean> headCheck, Func<Char, Boolean> bodyCheck, Func<Char, Boolean> tailCheck) => Check(headCheck, bodyCheck, tailCheck);
 
 		/// <summary>
 		/// Use the specified <paramref name="headCheck"/>, <paramref name="bodyCheck"/>, and <paramref name="tailCheck"/> to represent a variable length string, along with whether each check is required for a valid string. The head and tail are only present once, with the body being repeatable.
@@ -255,20 +252,6 @@ namespace Stringier.Patterns {
 		}
 
 		/// <summary>
-		/// Use the specified <paramref name="headCheck"/>, <paramref name="bodyCheck"/>, and <paramref name="tailCheck"/> to represent a variable length string, along with whether each check is required for a valid string. The head and tail are only present once, with the body being repeatable.
-		/// </summary>
-		/// <param name="name">Name to display this pattern as.</param>
-		/// <param name="headCheck">A <see cref="Func{T, TResult}"/> to validate the head.</param>
-		/// <param name="headRequired">Whether the <paramref name="headCheck"/> is required.</param>
-		/// <param name="bodyCheck">A <see cref="Func{T, TResult}"/> to validate the body, which may repeat.</param>
-		/// <param name="bodyRequired">Whether the <paramref name="bodyCheck"/> is required.</param>
-		/// <param name="tailCheck">A <see cref="Func{T, TResult}"/> to validate the tail.</param>
-		/// <param name="tailRequired">Whether the <paramref name="tailRequired"/> is required.</param>
-		/// <returns></returns>
-		[Obsolete("Remove the name parameter as it's no longer used.")]
-		public static Pattern Check(String name, Func<Char, Boolean> headCheck, Boolean headRequired, Func<Char, Boolean> bodyCheck, Boolean bodyRequired, Func<Char, Boolean> tailCheck, Boolean tailRequired) => Check(headCheck, headRequired, bodyCheck, bodyRequired, tailCheck, tailRequired);
-
-		/// <summary>
 		/// Use the specified <paramref name="headCheck"/>, <paramref name="bodyCheck"/>, and <paramref name="tailCheck"/> to represent the valid form of a word, along with the <paramref name="bias"/>.
 		/// </summary>
 		/// <param name="name">Name to display this pattern as.</param>
@@ -283,18 +266,6 @@ namespace Stringier.Patterns {
 			Guard.NotNull(tailCheck, nameof(tailCheck));
 			return new WordChecker(bias, headCheck, bodyCheck, tailCheck);
 		}
-
-		/// <summary>
-		/// Use the specified <paramref name="headCheck"/>, <paramref name="bodyCheck"/>, and <paramref name="tailCheck"/> to represent the valid form of a word, along with the <paramref name="bias"/>.
-		/// </summary>
-		/// <param name="name">Name to display this pattern as.</param>
-		/// <param name="bias">Endian bias of the word. Head bias requires the head if only one letter is present. Tail bias requires the tail if only one letter is present.</param>
-		/// <param name="headCheck">A <see cref="Func{T, TResult}"/> to validate the head.</param>
-		/// <param name="bodyCheck">A <see cref="Func{T, TResult}"/> to validate the body, which may repeat.</param>
-		/// <param name="tailCheck">A <see cref="Func{T, TResult}"/> to validate the tail.</param>
-		/// <returns></returns>
-		[Obsolete("Remove the name parameter as it's not longer used")]
-		public static Pattern Check(String name, Bias bias, Func<Char, Boolean> headCheck, Func<Char, Boolean> bodyCheck, Func<Char, Boolean> tailCheck) => Check(bias, headCheck, bodyCheck, tailCheck);
 
 		#endregion
 
@@ -318,6 +289,13 @@ namespace Stringier.Patterns {
 		/// <param name="right">The succeeding <see cref="Char"/>.</param>
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
 		internal virtual Pattern Concatenate(Char right) => new Concatenator(this, new CharLiteral(right));
+
+		/// <summary>
+		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="right"/> <see cref="Rune"/>.
+		/// </summary>
+		/// <param name="right">The succeeding <see cref="Rune"/>.</param>
+		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
+		internal virtual Pattern Concatenate(Rune right) => new Concatenator(this, new RuneLiteral(right));
 
 		/// <summary>
 		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="right"/> <see cref="String"/>.
@@ -369,6 +347,13 @@ namespace Stringier.Patterns {
 		/// <param name="other">The succeeding <see cref="Char"/></param>
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
 		public virtual Pattern Then(Char other) => Concatenate(other);
+
+		/// <summary>
+		/// Concatenates the patterns so that this <see cref="Pattern"/> comes before <paramref name="other"/>
+		/// </summary>
+		/// <param name="other">The succeeding <see cref="Rune"/></param>
+		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
+		public virtual Pattern Then(Rune other) => Concatenate(other);
 
 		/// <summary>
 		/// Concatenates the patterns so that this <see cref="Pattern"/> comes before <paramref name="other"/>
@@ -457,6 +442,13 @@ namespace Stringier.Patterns {
 		/// <summary>
 		/// Marks the <paramref name="pattern"/> as negated.
 		/// </summary>
+		/// <param name="pattern">The <see cref="Rune"/> to negate.</param>
+		/// <returns>A new <see cref="Pattern"/> which has been negated.</returns>
+		public static Pattern Not(Rune pattern) => new RuneLiteral(pattern).Negate();
+
+		/// <summary>
+		/// Marks the <paramref name="pattern"/> as negated.
+		/// </summary>
 		/// <param name="pattern">The <see cref="Patterns.Capture"/> to negate.</param>
 		/// <returns>A new <see cref="Pattern"/> which has been negated.</returns>
 		public static Pattern Not(Capture pattern) {
@@ -512,6 +504,13 @@ namespace Stringier.Patterns {
 		/// <param name="pattern">The optional <see cref="Pattern"/>.</param>
 		/// <returns>A new <see cref="Pattern"/> which is optional.</returns>
 		public static Pattern Maybe(Char pattern) => new CharLiteral(pattern).Optional();
+
+		/// <summary>
+		/// Marks the <paramref name="pattern"/> as optional.
+		/// </summary>
+		/// <param name="pattern">The optional <see cref="Pattern"/>.</param>
+		/// <returns>A new <see cref="Pattern"/> which is optional.</returns>
+		public static Pattern Maybe(Rune pattern) => new RuneLiteral(pattern).Optional();
 
 		/// <summary>
 		/// Marks the <paramref name="pattern"/> as optional.
@@ -626,6 +625,13 @@ namespace Stringier.Patterns {
 		/// <param name="pattern">The spanning <see cref="Char"/>.</param>
 		/// <returns>A new <see cref="Pattern"/> which is spanning.</returns>
 		public static Pattern Many(Char pattern) => new CharLiteral(pattern).Span();
+
+		/// <summary>
+		/// Marks the <paramref name="pattern"/> as spanning.
+		/// </summary>
+		/// <param name="pattern">The spanning <see cref="Rune"/>.</param>
+		/// <returns>A new <see cref="Pattern"/> which is spanning.</returns>
+		public static Pattern Many(Rune pattern) => new RuneLiteral(pattern).Span();
 
 		/// <summary>
 		/// Marks the <paramref name="pattern"/> as spanning.

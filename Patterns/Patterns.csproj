@@ -25,8 +25,9 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Defender.Guards" Version="0.10.0" />
-    <PackageReference Include="Stringier.Core" Version="3.0.0-beta.1" />
+    <PackageReference Include="Defender.Guards" Version="0.10.1" />
+    <PackageReference Include="Stringier.Core" Version="3.0.0-beta.3" />
+    <PackageReference Include="Stringier.Glyph" Version="3.0.0-beta.2" />
     <PackageReference Include="System.Memory" Version="4.5.3" />
   </ItemGroup>
 

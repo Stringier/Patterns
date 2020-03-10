@@ -8,14 +8,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.CaptureLiteral" Collapsed="true">
-    <Position X="41" Y="4.75" Width="1.5" />
+    <Position X="47.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAAACAAAAAAAAAQAQAAAAAAAAAAAAAABAA=</HashCode>
       <FileName>Nodes\CaptureLiteral.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.Capturer" Collapsed="true">
-    <Position X="18.5" Y="3.25" Width="1.5" />
+    <Position X="23" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAAAAAAAAAAAAAQAQAAAAAAAAAAAAAABAA=</HashCode>
       <FileName>Nodes\Capturer.cs</FileName>
@@ -29,7 +29,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.CharLiteral" Collapsed="true">
-    <Position X="38.75" Y="4.75" Width="1.5" />
+    <Position X="45.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAAACAAAAAAAAAQAAAAACAAAAIAAAAQBAA=</HashCode>
       <FileName>Nodes\CharLiteral.cs</FileName>
@@ -43,42 +43,42 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.Literal" Collapsed="true">
-    <Position X="41" Y="3.25" Width="1.5" />
+    <Position X="46.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Nodes\Literal.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.Optor" Collapsed="true">
-    <Position X="14" Y="3.25" Width="1.5" />
+    <Position X="18.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAAIAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAIABAA=</HashCode>
       <FileName>Nodes\Optor.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.Repeater" Collapsed="true">
-    <Position X="16.25" Y="3.25" Width="1.5" />
+    <Position X="20.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAAAAAAAAAAAAQQAAAAAAAAAAAAAAAABAA=</HashCode>
       <FileName>Nodes\Repeater.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.Spanner" Collapsed="true">
-    <Position X="20.75" Y="3.25" Width="1.5" />
+    <Position X="25.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAAIAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAIABAA=</HashCode>
       <FileName>Nodes\Spanner.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.StringLiteral" Collapsed="true">
-    <Position X="43.25" Y="4.75" Width="1.5" />
+    <Position X="50" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAAACAAQAAAAAAQAAAAAAAAAAIAAAAQBAA=</HashCode>
       <FileName>Nodes\StringLiteral.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.Negator" Collapsed="true">
-    <Position X="11.75" Y="3.25" Width="1.5" />
+    <Position X="16.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAAAAAAAAAAAAAQAAAAAAAAAAAEAAAABAA=</HashCode>
       <FileName>Nodes\Negator.cs</FileName>
@@ -106,63 +106,63 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.RegexAdapter" Collapsed="true">
-    <Position X="45.5" Y="1.75" Width="1.5" />
+    <Position X="52.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAABAAAAAAAAAAQAAAAAAAAAAAEAAAABAA=</HashCode>
       <FileName>Nodes\RegexAdapter.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.AlternateCharChecker" Collapsed="true">
-    <Position X="23" Y="4.75" Width="1.5" />
+    <Position X="27.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAAAAAAAAAAAAAQAAAAAAAACACAAAAABAA=</HashCode>
       <FileName>Nodes\AlternateCharChecker.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.CharChecker" Collapsed="true">
-    <Position X="27.5" Y="4.75" Width="1.5" />
+    <Position X="32" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAgIAAAAACAAAAAAAAAQAAAAAAAAAAIAAAAABAA=</HashCode>
       <FileName>Nodes\CharChecker.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.Checker" Collapsed="true">
-    <Position X="29.75" Y="3.25" Width="1.5" />
+    <Position X="34.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Nodes\Checker.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.RepeatCharChecker" Collapsed="true">
-    <Position X="36.5" Y="4.75" Width="1.5" />
+    <Position X="41" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAgIAAAAAAAAAAAAAAQQAAAAAAAAAAAAAAAABAA=</HashCode>
       <FileName>Nodes\RepeatCharChecker.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.StringChecker" Collapsed="true">
-    <Position X="25.25" Y="4.75" Width="1.5" />
+    <Position X="29.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAQCBAIgAAAAAAAAAIQABCQAAAAAAAAABIAAAAADEA=</HashCode>
       <FileName>Nodes\StringChecker.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.WordChecker" Collapsed="true">
-    <Position X="29.75" Y="4.75" Width="1.5" />
+    <Position X="34.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAQAAAIAQAAAAAAAAgQAAAQAAAAAAAAAAAAAAAADAA=</HashCode>
       <FileName>Nodes\WordChecker.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.Primative" Collapsed="true">
-    <Position X="33" Y="1.75" Width="1.5" />
+    <Position X="38.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Nodes\Primative.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.Modifier" Collapsed="true">
-    <Position X="16.25" Y="1.75" Width="1.5" />
+    <Position X="18.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Nodes\Modifier.cs</FileName>
@@ -176,24 +176,45 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Pattern" Collapsed="true">
-    <Position X="23" Y="0.5" Width="1.5" />
+    <Position X="26.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IgARJAgMhKQAKCAAWVASBBBQQGhElBRgABKlEG4RTAQ=</HashCode>
+      <HashCode>IgARLAgNhKSAKCAAeVESBBBQQGhElJRgABKlEG4RTAQ=</HashCode>
       <FileName>Pattern.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.SourceEndChecker" Collapsed="true">
-    <Position X="32" Y="4.75" Width="1.5" />
+    <Position X="36.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAABAA=</HashCode>
       <FileName>Nodes\SourceEndChecker.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Stringier.Patterns.Nodes.LineEndChecker" Collapsed="true">
-    <Position X="34.25" Y="4.75" Width="1.5" />
+    <Position X="38.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAABAA=</HashCode>
       <FileName>Nodes\LineEndChecker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Stringier.Patterns.Nodes.Fuzzer" Collapsed="true">
+    <Position X="11.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAQAAAAAAQAAAAAAAAAAAAAAAABAE=</HashCode>
+      <FileName>Nodes\Fuzzer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Stringier.Patterns.Nodes.KleenesClosure" Collapsed="true">
+    <Position X="14" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Nodes\KleenesClosure.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Stringier.Patterns.Nodes.RuneLiteral" Collapsed="true">
+    <Position X="43.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAEAAAAAAAAAAAAAQAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Nodes\RuneLiteral.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

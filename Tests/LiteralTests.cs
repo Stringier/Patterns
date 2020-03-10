@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
 using Defender;
@@ -13,7 +14,7 @@ namespace Tests {
 		}
 
 		[Fact]
-		public void Consume_String() {
+		public void Consume_String_FromString() {
 			Claim.That("Hello")
 				.Consumes("Hello", "Hello World")
 				.FailsToConsume("Hell")
@@ -21,7 +22,7 @@ namespace Tests {
 		}
 
 		[Fact]
-		public void Consume_Source() {
+		public void Consume_String_FromSource() {
 			Pattern hello = "Hello";
 			Pattern space = ' ';
 			Pattern world = "World";
@@ -31,6 +32,14 @@ namespace Tests {
 			Claim.That(world).Consumes("World", ref source);
 			source = new Source("Hello World");
 			Claim.That(hello.Then(space).Then(world)).Consumes("Hello World", ref source);
+		}
+
+		[Fact]
+		public void Consume_Rune_FromString() {
+			Pattern pattern = new Rune('h');
+			Claim.That(pattern).Consumes("h", "hello");
+			pattern = new Rune(0x1D11E);
+			Claim.That(pattern).Consumes("𝄞", "𝄞abc");
 		}
 
 		[Fact]

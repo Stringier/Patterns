@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Buffers;
 using System.IO;
+using System.Text;
 using Defender;
 
 namespace Stringier.Patterns {
@@ -77,8 +79,6 @@ namespace Stringier.Patterns {
 			HashCode = Rng.Next();
 		}
 
-		public ref readonly Char this[Int32 index] => ref Buffer[index];
-
 		/// <summary>
 		/// Whether currently at the end of the source
 		/// </summary>
@@ -96,6 +96,8 @@ namespace Stringier.Patterns {
 		/// This is mutable for internal manipulation, such as advancing on a match or resetting the index after a failed consume.
 		/// </remarks>
 		public Int32 Position { get; internal set; }
+
+		public ref readonly Char this[Int32 index] => ref Buffer[index];
 
 		public static Boolean operator !=(Source left, Source right) => !left.Equals(right);
 
@@ -162,6 +164,21 @@ namespace Stringier.Patterns {
 		internal ReadOnlySpan<Char> Peek(Int32 Count) => Buffer.Slice(Position, Count);
 
 		/// <summary>
+		/// Peek at the next <see cref="Rune"/> without advancing the position
+		/// </summary>
+		/// <param name="charsConsumed">The amount of <see cref="Char"/> used by the <see cref="Rune"/>.</param>
+		/// <returns>The next <see cref="Rune"/> in the <see cref="Source"/>.</returns>
+		internal Rune PeekRune(out Int32 charsConsumed) {
+			ReadOnlySpan<Char> peek = Peek(2);
+			switch (Rune.DecodeFromUtf16(peek, out Rune result, out charsConsumed)) {
+			case OperationStatus.Done:
+				return result;
+			default:
+				throw new IndexOutOfRangeException();
+			}
+		}
+
+		/// <summary>
 		/// Read the next <see cref="Char"/> and advance the position
 		/// </summary>
 		/// <returns>The next <see cref="Char"/> in the <see cref="Source"/></returns>
@@ -176,6 +193,16 @@ namespace Stringier.Patterns {
 			ReadOnlySpan<Char> Result = Peek(Count);
 			Position += Count;
 			return Result;
+		}
+
+		/// <summary>
+		/// Read the next <see cref="Rune"/> and advance the position
+		/// </summary>
+		/// <returns>The next <see cref="Rune"/> in the <see cref="Source"/></returns>
+		internal Rune ReadRune() {
+			Rune rune = PeekRune(out Int32 cons);
+			Position += cons;
+			return rune;
 		}
 
 		/// <summary>

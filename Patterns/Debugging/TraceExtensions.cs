@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Stringier.Patterns.Debugging {
 	/// <summary>
@@ -11,6 +12,13 @@ namespace Stringier.Patterns.Debugging {
 		/// <param name="text"></param>
 		/// <param name="position"></param>
 		internal static void Collect(this ITrace trace, Char text, Int32 position) => trace.Collect(text.ToString(), position);
+
+		/// <summary>
+		/// Collects the parameters as a trace step.
+		/// </summary>
+		/// <param name="text"></param>
+		/// <param name="position"></param>
+		internal static void Collect(this ITrace trace, Rune text, Int32 position) => trace.Collect(text.ToString(), position);
 
 		/// <summary>
 		/// Collects the parameters as a trace step.
