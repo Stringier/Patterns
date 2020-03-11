@@ -11,6 +11,8 @@ namespace Stringier.Patterns {
 
 		public static implicit operator Pattern(Rune rune) => new RuneLiteral(rune);
 
+		public static implicit operator Pattern(Glyph glyph) => OneOf(Compare.None, Glyph.GetVariants(glyph));
+
 		public static implicit operator Pattern(String @string) {
 			Guard.NotNull(@string, nameof(@string));
 			return new StringLiteral(@string);
@@ -47,6 +49,13 @@ namespace Stringier.Patterns {
 		/// <param name="right">The <see cref="Rune"/> to check if this <see cref="Pattern"/> does not match.</param>
 		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
 		internal virtual Pattern Alternate(Rune right) => new Alternator(this, new RuneLiteral(right));
+
+		/// <summary>
+		/// Declares <paramref name="right"/> to be an alternate of this <see cref="Pattern"/>.
+		/// </summary>
+		/// <param name="right">The <see cref="Glyph"/> to check if this <see cref="Pattern"/> does not match.</param>
+		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
+		internal virtual Pattern Alternate(Glyph right) => new Alternator(this, right);
 
 		/// <summary>
 		/// Declares <paramref name="right"/> to be an alternate of this <see cref="Pattern"/>.
@@ -105,6 +114,13 @@ namespace Stringier.Patterns {
 		/// <param name="other">The <see cref="Rune"/> to check if this <see cref="Pattern"/> does not match</param>
 		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
 		public virtual Pattern Or(Rune other) => Alternate(other);
+
+		/// <summary>
+		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
+		/// </summary>
+		/// <param name="other">The <see cref="Glyph"/> to check if this <see cref="Pattern"/> does not match</param>
+		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
+		public virtual Pattern Or(Glyph other) => Alternate(other);
 
 		/// <summary>
 		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
@@ -298,6 +314,13 @@ namespace Stringier.Patterns {
 		internal virtual Pattern Concatenate(Rune right) => new Concatenator(this, new RuneLiteral(right));
 
 		/// <summary>
+		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="right"/> <see cref="Rune"/>.
+		/// </summary>
+		/// <param name="right">The succeeding <see cref="Glyph"/>.</param>
+		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
+		internal virtual Pattern Concatenate(Glyph right) => new Concatenator(this, right);
+
+		/// <summary>
 		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="right"/> <see cref="String"/>.
 		/// </summary>
 		/// <param name="right">The succeeding <see cref="String"/>.</param>
@@ -354,6 +377,13 @@ namespace Stringier.Patterns {
 		/// <param name="other">The succeeding <see cref="Rune"/></param>
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
 		public virtual Pattern Then(Rune other) => Concatenate(other);
+
+		/// <summary>
+		/// Concatenates the patterns so that this <see cref="Pattern"/> comes before <paramref name="other"/>
+		/// </summary>
+		/// <param name="other">The succeeding <see cref="Glyph"/></param>
+		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
+		public virtual Pattern Then(Glyph other) => Concatenate(other);
 
 		/// <summary>
 		/// Concatenates the patterns so that this <see cref="Pattern"/> comes before <paramref name="other"/>
@@ -449,6 +479,13 @@ namespace Stringier.Patterns {
 		/// <summary>
 		/// Marks the <paramref name="pattern"/> as negated.
 		/// </summary>
+		/// <param name="pattern">The <see cref="Glyph"/> to negate.</param>
+		/// <returns>A new <see cref="Pattern"/> which has been negated.</returns>
+		public static Pattern Not(Glyph pattern) => ((Pattern)pattern).Negate();
+
+		/// <summary>
+		/// Marks the <paramref name="pattern"/> as negated.
+		/// </summary>
 		/// <param name="pattern">The <see cref="Patterns.Capture"/> to negate.</param>
 		/// <returns>A new <see cref="Pattern"/> which has been negated.</returns>
 		public static Pattern Not(Capture pattern) {
@@ -511,6 +548,13 @@ namespace Stringier.Patterns {
 		/// <param name="pattern">The optional <see cref="Pattern"/>.</param>
 		/// <returns>A new <see cref="Pattern"/> which is optional.</returns>
 		public static Pattern Maybe(Rune pattern) => new RuneLiteral(pattern).Optional();
+
+		/// <summary>
+		/// Marks the <paramref name="pattern"/> as optional.
+		/// </summary>
+		/// <param name="pattern">The optional <see cref="Pattern"/>.</param>
+		/// <returns>A new <see cref="Pattern"/> which is optional.</returns>
+		public static Pattern Maybe(Glyph pattern) => ((Pattern)pattern).Optional();
 
 		/// <summary>
 		/// Marks the <paramref name="pattern"/> as optional.
@@ -632,6 +676,13 @@ namespace Stringier.Patterns {
 		/// <param name="pattern">The spanning <see cref="Rune"/>.</param>
 		/// <returns>A new <see cref="Pattern"/> which is spanning.</returns>
 		public static Pattern Many(Rune pattern) => new RuneLiteral(pattern).Span();
+
+		/// <summary>
+		/// Marks the <paramref name="pattern"/> as spanning.
+		/// </summary>
+		/// <param name="pattern">The spanning <see cref="Glyph"/>.</param>
+		/// <returns>A new <see cref="Pattern"/> which is spanning.</returns>
+		public static Pattern Many(Glyph pattern) => ((Pattern)pattern).Span();
 
 		/// <summary>
 		/// Marks the <paramref name="pattern"/> as spanning.

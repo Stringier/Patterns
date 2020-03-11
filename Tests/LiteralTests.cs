@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Stringier;
 using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
 using Defender;
@@ -35,7 +36,7 @@ namespace Tests {
 		}
 
 		[Fact]
-		public void Consume_Rune_FromString() {
+		public void Consume_Rune_FromSource() {
 			Source source = new Source("hello");
 			Pattern pattern = new Rune('h');
 			Claim.That(pattern).Consumes("h", ref source);
@@ -44,6 +45,15 @@ namespace Tests {
 			pattern = new Rune(0x1D11E);
 			Claim.That(pattern).Consumes("𝄞", ref source);
 			Claim.That("abc").Consumes("abc", ref source);
+		}
+
+		[Fact]
+		public void Consume_Glyph_FromSource() {
+			Source source = new Source("\u00C7a-va");
+			Pattern pattern = new Glyph("Ç");
+			Claim.That(pattern).Consumes("Ç", ref source);
+			source = new Source("\u0043\u0327a-va");
+			Claim.That(pattern).Consumes("Ç", ref source);
 		}
 
 		[Fact]
