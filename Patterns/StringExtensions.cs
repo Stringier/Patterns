@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using static Stringier.Patterns.Pattern;
 using Stringier.Patterns.Debugging;
 using Stringier.Patterns.Nodes;
 using Defender;
+using System.Collections.Generic;
 
 namespace Stringier.Patterns {
 	public static class StringExtensions {
@@ -220,7 +222,22 @@ namespace Stringier.Patterns {
 		/// <returns>A new <see cref="Pattern"/> representing the <paramref name="pattern"/> compared with <paramref name="comparisonType"/>.</returns>
 		public static Pattern With(this String pattern, Compare comparisonType) {
 			Guard.NotNull(pattern, nameof(pattern));
-			return new StringLiteral(pattern, comparisonType);
+			Guard.NotEmpty(pattern, nameof(pattern));
+			switch (comparisonType) {
+			case Compare.GlyphInsensitive:
+				IEnumerator<String[]> enumerator = Glyph.GetVariants(pattern).GetEnumerator();
+				String[] current;
+				_ = enumerator.MoveNext(); //The pattern wasn't empty, so we can safely do this for the first call
+				current = enumerator.Current;
+				Pattern result = current.Length == 1 ? current[0] : OneOf(Compare.CaseInsensitive, current);
+				while (enumerator.MoveNext()) {
+					current = enumerator.Current;
+					result &= current.Length == 1 ? current[0] : OneOf(Compare.CaseInsensitive, current);
+				}
+				return result;
+			default:
+				return new StringLiteral(pattern, comparisonType);
+			}
 		}
 
 		/// <summary>

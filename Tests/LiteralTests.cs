@@ -65,6 +65,18 @@ namespace Tests {
 		}
 
 		[Fact]
+		public void Consume_GlyphInsensitive() {
+			Pattern pattern = "Ça-va".With(Compare.GlyphInsensitive);
+			Claim.That(pattern)
+				.Consumes("Ça-va", "\u00C7a-va")
+				.Consumes("Ça-va", "\u0043\u0327a-va");
+			pattern = "Jalapeño".With(Compare.GlyphInsensitive);
+			Claim.That(pattern)
+				.Consumes("Jalapeño", "Jalape\u00F1o")
+				.Consumes("Jalapeño", "Jalape\u006E\u0303o");
+		}
+
+		[Fact]
 		public void Neglect() {
 			Claim.That(Not("Hello"))
 				.Consumes("Oh no", "Oh no!")

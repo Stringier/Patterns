@@ -2,6 +2,7 @@
 
 open System
 open System.Text
+open Stringier
 
 [<AutoOpen>]
 module LiteralExtensions =
@@ -10,6 +11,7 @@ module LiteralExtensions =
         static member Literal(value:String) = value.AsPattern()
         static member Literal(value:Char) = value.AsPattern()
         static member Literal(value:Rune) = value.AsPattern()
+        static member Literal(value:Glyph) = value.AsPattern()
         static member Literal(value:Capture ref) = (!value).AsPattern()
         static member Literal(value:System.Text.RegularExpressions.Regex) = value.AsPattern()
         static member With(pattern:String, comparisonType:Compare) = pattern.With(comparisonType)

@@ -202,7 +202,14 @@ namespace Stringier.Patterns {
 		/// <param name="pattern">The <see cref="Char"/> pattern.</param>
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <returns>A new <see cref="Pattern"/> representing the <paramref name="pattern"/> compared with <paramref name="comparisonType"/>.</returns>
-		public static Pattern With(this Char pattern, Compare comparisonType) => new CharLiteral(pattern, comparisonType);
+		public static Pattern With(this Char pattern, Compare comparisonType) {
+			switch (comparisonType) {
+			case Compare.GlyphInsensitive:
+				return new Glyph(pattern).AsPattern();
+			default:
+				return new CharLiteral(pattern, comparisonType);
+			}
+		}
 
 		/// <summary>
 		/// Checks the first character in the <paramref name="source"/> against this character.
