@@ -83,7 +83,7 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <param name="other">The <see cref="Pattern"/> to check if this <see cref="Pattern"/> does not match</param>
 		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public sealed override Pattern Or(Pattern other) {
+		internal sealed override Pattern Alternate(Pattern other) {
 			if (ReadOnly) {
 				return base.Or(other);
 			}
@@ -101,7 +101,7 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <param name="other">The <see cref="String"/> to check if this <see cref="Pattern"/> does not match</param>
 		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public sealed override Pattern Or(String other) {
+		internal sealed override Pattern Alternate(String other) {
 			if (ReadOnly) {
 				return base.Or(other);
 			}
@@ -119,7 +119,7 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <param name="other">The <see cref="Char"/> to check if this <see cref="Pattern"/> does not match</param>
 		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public sealed override Pattern Or(Char other) {
+		internal sealed override Pattern Alternate(Char other) {
 			if (ReadOnly) {
 				return base.Or(other);
 			}
@@ -128,24 +128,6 @@ namespace Stringier.Patterns {
 			}
 			Head = Head.Alternate(other);
 			return this;
-		}
-
-		/// <summary>
-		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
-		/// </summary>
-		/// <param name="other">The <see cref="Capture"/> to check if this <see cref="Pattern"/> does not match</param>
-		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public sealed override Pattern Or(Capture other) {
-			if (ReadOnly) {
-				return base.Or(other);
-			}
-			Guard.NotNull(other, nameof(other));
-			if (Head is null) {
-				throw new PatternUndefinedException();
-			} else {
-				Head = Head.Alternate(new CaptureLiteral(other));
-				return this;
-			}
 		}
 
 		#endregion
@@ -177,7 +159,7 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <param name="other">The succeeding <see cref="Pattern"/></param>
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public sealed override Pattern Then(Pattern other) {
+		internal sealed override Pattern Concatenate(Pattern other) {
 			if (ReadOnly) {
 				return base.Then(other);
 			}
@@ -191,7 +173,7 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <param name="other">The succeeding <see cref="String"/></param>
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public sealed override Pattern Then(String other) {
+		internal sealed override Pattern Concatenate(String other) {
 			if (ReadOnly) {
 				return base.Then(other);
 			}
@@ -205,25 +187,11 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <param name="other">The succeeding <see cref="Char"/></param>
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public sealed override Pattern Then(Char other) {
+		internal sealed override Pattern Concatenate(Char other) {
 			if (ReadOnly) {
 				return base.Then(other);
 			}
 			Head = Head is null ? new CharLiteral(other) : Head.Concatenate(other);
-			return this;
-		}
-
-		/// <summary>
-		/// Concatenates the patterns so that this <see cref="Pattern"/> comes before <paramref name="other"/>
-		/// </summary>
-		/// <param name="other">The succeeding <see cref="Pattern"/></param>
-		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public sealed override Pattern Then(Capture other) {
-			if (ReadOnly) {
-				return base.Then(other);
-			}
-			Guard.NotNull(other, nameof(other));
-			Head = Head is null ? new CaptureLiteral(other) : Head.Concatenate(new CaptureLiteral(other));
 			return this;
 		}
 

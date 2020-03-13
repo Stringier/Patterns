@@ -70,7 +70,7 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <param name="other">The <see cref="Pattern"/> to check if this <see cref="Pattern"/> does not match</param>
 		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public virtual Pattern Or(Pattern other) {
+		public Pattern Or(Pattern other) {
 			Guard.NotNull(other, nameof(other));
 			return Alternate(other);
 		}
@@ -80,7 +80,7 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <param name="other">The <see cref="String"/> to check if this <see cref="Pattern"/> does not match</param>
 		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public virtual Pattern Or(String other) {
+		public Pattern Or(String other) {
 			Guard.NotNull(other, nameof(other));
 			return Alternate(other);
 		}
@@ -90,28 +90,28 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <param name="other">The <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/> to check if this <see cref="Pattern"/> does not match</param>
 		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public virtual Pattern Or(ReadOnlySpan<Char> other) => Alternate(other);
+		public Pattern Or(ReadOnlySpan<Char> other) => Alternate(other);
 
 		/// <summary>
 		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
 		/// </summary>
 		/// <param name="other">The <see cref="Char"/> to check if this <see cref="Pattern"/> does not match</param>
 		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public virtual Pattern Or(Char other) => Alternate(other);
+		public Pattern Or(Char other) => Alternate(other);
 
 		/// <summary>
 		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
 		/// </summary>
 		/// <param name="other">The <see cref="Rune"/> to check if this <see cref="Pattern"/> does not match</param>
 		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public virtual Pattern Or(Rune other) => Alternate(other);
+		public Pattern Or(Rune other) => Alternate(other);
 
 		/// <summary>
 		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
 		/// </summary>
 		/// <param name="other">The <see cref="Patterns.Capture"/> to check if this <see cref="Pattern"/> does not match</param>
 		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public virtual Pattern Or(Capture other) {
+		public Pattern Or(Capture other) {
 			Guard.NotNull(other, nameof(other));
 			return Alternate(new CaptureLiteral(other));
 		}
@@ -319,7 +319,7 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <param name="other">The succeeding <see cref="Pattern"/></param>
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public virtual Pattern Then(Pattern other) {
+		public Pattern Then(Pattern other) {
 			Guard.NotNull(other, nameof(other));
 			return Concatenate(other);
 		}
@@ -329,7 +329,7 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <param name="other">The succeeding <see cref="String"/></param>
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public virtual Pattern Then(String other) {
+		public Pattern Then(String other) {
 			Guard.NotNull(other, nameof(other));
 			return Concatenate(other);
 		}
@@ -339,28 +339,28 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <param name="other">The succeeding <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/></param>
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public virtual Pattern Then(ReadOnlySpan<Char> other) => Concatenate(other);
+		public Pattern Then(ReadOnlySpan<Char> other) => Concatenate(other);
 
 		/// <summary>
 		/// Concatenates the patterns so that this <see cref="Pattern"/> comes before <paramref name="other"/>
 		/// </summary>
 		/// <param name="other">The succeeding <see cref="Char"/></param>
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public virtual Pattern Then(Char other) => Concatenate(other);
+		public Pattern Then(Char other) => Concatenate(other);
 
 		/// <summary>
 		/// Concatenates the patterns so that this <see cref="Pattern"/> comes before <paramref name="other"/>
 		/// </summary>
 		/// <param name="other">The succeeding <see cref="Rune"/></param>
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public virtual Pattern Then(Rune other) => Concatenate(other);
+		public Pattern Then(Rune other) => Concatenate(other);
 
 		/// <summary>
 		/// Concatenates the patterns so that this <see cref="Pattern"/> comes before <paramref name="other"/>
 		/// </summary>
 		/// <param name="other">The succeeding <see cref="Pattern"/></param>
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
-		public virtual Pattern Then(Capture other) {
+		public Pattern Then(Capture other) {
 			Guard.NotNull(other, nameof(other));
 			return Concatenate(new CaptureLiteral(other));
 		}
