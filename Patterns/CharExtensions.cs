@@ -205,30 +205,6 @@ namespace Stringier.Patterns {
 		public static Pattern With(this Char pattern, Case comparisonType) => new CharLiteral(pattern, comparisonType);
 
 		/// <summary>
-		/// Compare this <paramref name="pattern"/> with the given <paramref name="comparisonType"/>.
-		/// </summary>
-		/// <param name="pattern">The <see cref="Char"/> pattern.</param>
-		/// <param name="comparisonType">Whether the comparison is sensitive to grapheme encoding.</param>
-		/// <returns>A new <see cref="Pattern"/> representing the <paramref name="pattern"/> compared with <paramref name="comparisonType"/>.</returns>
-		public static Pattern With(this Char pattern, Grapheme comparisonType) => pattern.With(Case.NoPreference, comparisonType);
-
-		/// <summary>
-		/// Compare this <paramref name="pattern"/> with the given <paramref name="caseComparison"/> and <paramref name="graphemeComparison"/>.
-		/// </summary>
-		/// <param name="pattern">The <see cref="Char"/> pattern.</param>
-		/// <param name="caseComparison">Whether the comparison is sensitive to casing.</param>
-		/// <param name="graphemeComparison">Whether the comparison is sensitive to grapheme encoding.</param>
-		/// <returns>A new <see cref="Pattern"/> representing the <paramref name="pattern"/> compared with <paramref name="caseComparison"/> and <paramref name="graphemeComparison"/>.</returns>
-		public static Pattern With(this Char pattern, Case caseComparison, Grapheme graphemeComparison) {
-			switch (graphemeComparison) {
-			case Grapheme.Insensitive:
-				return new Glyph(pattern).With(caseComparison);
-			default:
-				return new CharLiteral(pattern, caseComparison);
-			}
-		}
-
-		/// <summary>
 		/// Checks the first character in the <paramref name="source"/> against this character.
 		/// </summary>
 		/// <remarks>

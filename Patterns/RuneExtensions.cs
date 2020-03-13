@@ -207,31 +207,6 @@ namespace Stringier.Patterns {
 		public static Pattern With(this Rune pattern, Case comparisonType) => new RuneLiteral(pattern, comparisonType);
 
 		/// <summary>
-		/// Compare this <paramref name="pattern"/> with the given <paramref name="comparisonType"/>.
-		/// </summary>
-		/// <param name="pattern">The <see cref="Rune"/> pattern.</param>
-		/// <param name="comparisonType">Whether the comparison is sensitive to grapheme encoding.</param>
-		/// <returns>A new <see cref="Pattern"/> representing the <paramref name="pattern"/> compared with <paramref name="comparisonType"/>.</returns>
-		public static Pattern With(this Rune pattern, Grapheme comparisonType) => pattern.With(Case.NoPreference, comparisonType);
-
-		/// <summary>
-		/// Compare this <paramref name="pattern"/> with the given <paramref name="caseComparison"/> and <paramref name="graphemeComparison"/>.
-		/// </summary>
-		/// <param name="pattern">The <see cref="Rune"/> pattern.</param>
-		/// <param name="caseComparison">Whether the comparison is sensitive to casing.</param>
-		/// <param name="graphemeComparison">Whether the comparison is sensitive to grapheme encoding.</param>
-		/// <returns>A new <see cref="Pattern"/> representing the <paramref name="pattern"/> compared with <paramref name="caseComparison"/> and <paramref name="graphemeComparison"/>.</returns>
-		public static Pattern With(this Rune pattern, Case caseComparison, Grapheme graphemeComparison) {
-			switch (graphemeComparison) {
-			case Grapheme.Insensitive:
-				String[] variants = Glyph.GetVariants(new Glyph(pattern));
-				return OneOf(caseComparison, variants);
-			default:
-				return new RuneLiteral(pattern, caseComparison);
-			}
-		}
-
-		/// <summary>
 		/// Checks the first Runeacter in the <paramref name="source"/> against this Runeacter.
 		/// </summary>
 		/// <remarks>

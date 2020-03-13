@@ -227,39 +227,6 @@ namespace Stringier.Patterns {
 		}
 
 		/// <summary>
-		/// Compare this <paramref name="pattern"/> with the given <paramref name="comparisonType"/>.
-		/// </summary>
-		/// <param name="pattern">The <see cref="String"/> pattern.</param>
-		/// <param name="comparisonType">Whether the comparison is sensitive to grapheme encoding.</param>
-		/// <returns>A new <see cref="Pattern"/> representing the <paramref name="pattern"/> compared with <paramref name="comparisonType"/>.</returns>
-		public static Pattern With(this String pattern, Grapheme comparisonType) => pattern.With(Case.NoPreference, comparisonType);
-
-		/// <summary>
-		/// Compare this <paramref name="pattern"/> with the given <paramref name="caseComparison"/> and <paramref name="graphemeComparison"/>.
-		/// </summary>
-		/// <param name="pattern">The <see cref="String"/> pattern.</param>
-		/// <param name="caseComparison">Whether the comparison is sensitive to casing.</param>
-		/// <param name="graphemeComparison">Whether the comparison is sensitive to grapheme encoding.</param>
-		/// <returns>A new <see cref="Pattern"/> representing the <paramref name="pattern"/> compared with <paramref name="caseComparison"/> and <paramref name="graphemeComparison"/>.</returns>
-		public static Pattern With(this String pattern, Case caseComparison, Grapheme graphemeComparison) {
-			switch (graphemeComparison) {
-			case Grapheme.Insensitive:
-				IEnumerator<String[]> enumerator = Glyph.GetVariants(pattern).GetEnumerator();
-				String[] current;
-				_ = enumerator.MoveNext(); //The pattern wasn't empty, so we can safely do this for the first call
-				current = enumerator.Current;
-				Pattern result = current.Length == 1 ? current[0].With(caseComparison) : OneOf(caseComparison, current);
-				while (enumerator.MoveNext()) {
-					current = enumerator.Current;
-					result &= current.Length == 1 ? current[0].With(caseComparison) : OneOf(caseComparison, current);
-				}
-				return result;
-			default:
-				return new StringLiteral(pattern, caseComparison);
-			}
-		}
-
-		/// <summary>
 		/// Checks the first character in the <paramref name="source"/> against the first character of this <see cref="String"/>.
 		/// </summary>
 		/// <remarks>
