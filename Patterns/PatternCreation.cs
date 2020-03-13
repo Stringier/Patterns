@@ -11,7 +11,7 @@ namespace Stringier.Patterns {
 
 		public static implicit operator Pattern(Rune rune) => new RuneLiteral(rune);
 
-		public static implicit operator Pattern(Glyph glyph) => OneOf(Compare.None, Glyph.GetVariants(glyph));
+		public static implicit operator Pattern(Glyph glyph) => OneOf(Case.NoPreference, Glyph.GetVariants(glyph));
 
 		public static implicit operator Pattern(String @string) {
 			Guard.NotNull(@string, nameof(@string));
@@ -153,10 +153,10 @@ namespace Stringier.Patterns {
 		/// <summary>
 		/// Declares the <paramref name="patterns"/> to be alternates of each other; one of them will match.
 		/// </summary>
-		/// <param name="comparisonType">The <see cref="Compare"/> to use for all <paramref name="patterns"/>.</param>
+		/// <param name="comparisonType">The <see cref="Case"/> to use for all <paramref name="patterns"/>.</param>
 		/// <param name="patterns">The set of <see cref="String"/>.</param>
 		/// <returns>A new <see cref="Pattern"/> alternating all of the <paramref name="patterns"/>.</returns>
-		public static Pattern OneOf(Compare comparisonType, params String[] patterns) {
+		public static Pattern OneOf(Case comparisonType, params String[] patterns) {
 			Guard.NotNull(patterns, nameof(patterns));
 			if (patterns.Length < 2) {
 				throw new ArgumentException("Must have at least two patterns", nameof(patterns));
@@ -172,10 +172,10 @@ namespace Stringier.Patterns {
 		/// <summary>
 		/// Declares the <paramref name="patterns"/> to be alternates of each other; one of them will match.
 		/// </summary>
-		/// <param name="comparisonType">The <see cref="Compare"/> to use for all <paramref name="patterns"/>.</param>
+		/// <param name="comparisonType">The <see cref="Case"/> to use for all <paramref name="patterns"/>.</param>
 		/// <param name="patterns">The set of <see cref="Char"/>.</param>
 		/// <returns>A new <see cref="Pattern"/> alternating all of the <paramref name="patterns"/>.</returns>
-		public static Pattern OneOf(Compare comparisonType, params Char[] patterns) {
+		public static Pattern OneOf(Case comparisonType, params Char[] patterns) {
 			Guard.NotNull(patterns, nameof(patterns));
 			if (patterns.Length < 2) {
 				throw new ArgumentException("Must have at least two patterns", nameof(patterns));
@@ -193,15 +193,15 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <typeparam name="E">The <see cref="Enum"/> providing names.</typeparam>
 		/// <returns>A new <see cref="Pattern"/> alternating all the names of <typeparamref name="E"/>.</returns>
-		public static Pattern OneOf<E>() where E : Enum => OneOf<E>(Compare.None);
+		public static Pattern OneOf<E>() where E : Enum => OneOf<E>(Case.NoPreference);
 
 		/// <summary>
 		/// Declares the names of <typeparamref name="E"/> to be alternates of each other; one of them will match.
 		/// </summary>
-		/// <param name="comparisonType">The <see cref="Compare"/> to use for all <typeparamref name="E"/>.</param>
+		/// <param name="comparisonType">The <see cref="Case"/> to use for all <typeparamref name="E"/>.</param>
 		/// <typeparam name="E">The <see cref="Enum"/> providing names.</typeparam>
 		/// <returns>A new <see cref="Pattern"/> alternating all the names of <typeparamref name="E"/>.</returns>
-		public static Pattern OneOf<E>(Compare comparisonType) where E : Enum => OneOf(comparisonType, Enum.GetNames(typeof(E)));
+		public static Pattern OneOf<E>(Case comparisonType) where E : Enum => OneOf(comparisonType, Enum.GetNames(typeof(E)));
 
 		#endregion
 

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using static Stringier.Patterns.Pattern;
 using Stringier.Patterns.Debugging;
 using Stringier.Patterns.Nodes;
 using Defender;
+using System.Collections.Generic;
 
 namespace Stringier.Patterns {
 	public static class SpanExtensions {
@@ -21,7 +23,7 @@ namespace Stringier.Patterns {
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
 		public static Result Consume(this ReadOnlySpan<Char> pattern, String source) {
 			Guard.NotNull(source, nameof(source));
-			return pattern.Consume(source, Compare.CaseSensitive);
+			return pattern.Consume(source, Case.Sensitive);
 		}
 
 		/// <summary>
@@ -31,7 +33,7 @@ namespace Stringier.Patterns {
 		/// <param name="source">The <see cref="String"/> to consume</param>
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
-		public static Result Consume(this ReadOnlySpan<Char> pattern, String source, Compare comparisonType) {
+		public static Result Consume(this ReadOnlySpan<Char> pattern, String source, Case comparisonType) {
 			Guard.NotNull(source, nameof(source));
 			Source src = new Source(source);
 			return pattern.Consume(ref src, comparisonType);
@@ -43,7 +45,7 @@ namespace Stringier.Patterns {
 		/// <param name="pattern">The <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/> to match</param>
 		/// <param name="source">The <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/> to consume</param>
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
-		public static Result Consume(this ReadOnlySpan<Char> pattern, ReadOnlySpan<Char> source) => pattern.Consume(source, Compare.CaseSensitive);
+		public static Result Consume(this ReadOnlySpan<Char> pattern, ReadOnlySpan<Char> source) => pattern.Consume(source, Case.Sensitive);
 
 		/// <summary>
 		/// Attempt to consume the <paramref name="pattern"/> from the <paramref name="source"/>
@@ -52,7 +54,7 @@ namespace Stringier.Patterns {
 		/// <param name="source">The <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/> to consume</param>
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
-		public static Result Consume(this ReadOnlySpan<Char> pattern, ReadOnlySpan<Char> source, Compare comparisonType) {
+		public static Result Consume(this ReadOnlySpan<Char> pattern, ReadOnlySpan<Char> source, Case comparisonType) {
 			Source src = new Source(source);
 			return pattern.Consume(ref src, comparisonType);
 		}
@@ -63,7 +65,7 @@ namespace Stringier.Patterns {
 		/// <param name="pattern">The <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/> to match</param>
 		/// <param name="source">The <see cref="Source"/> to consume</param>
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
-		public static Result Consume(this ReadOnlySpan<Char> pattern, ref Source source) => pattern.Consume(ref source, Compare.CaseSensitive, null);
+		public static Result Consume(this ReadOnlySpan<Char> pattern, ref Source source) => pattern.Consume(ref source, Case.Sensitive, null);
 
 		/// <summary>
 		/// Attempt to consume the <paramref name="pattern"/> from the <paramref name="source"/>, adjusting the position in the <paramref name="source"/> as appropriate
@@ -72,7 +74,7 @@ namespace Stringier.Patterns {
 		/// <param name="source">The <see cref="Source"/> to consume</param>
 		/// <param name="trace">The <see cref="ITrace"/> to record steps in.</param>
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
-		public static Result Consume(this ReadOnlySpan<Char> pattern, ref Source source, ITrace? trace) => pattern.Consume(ref source, Compare.CaseSensitive, trace);
+		public static Result Consume(this ReadOnlySpan<Char> pattern, ref Source source, ITrace? trace) => pattern.Consume(ref source, Case.Sensitive, trace);
 
 		/// <summary>
 		/// Attempt to consume the <paramref name="pattern"/> from the <paramref name="source"/>, adjusting the position in the <paramref name="source"/> as appropriate
@@ -81,7 +83,7 @@ namespace Stringier.Patterns {
 		/// <param name="source">The <see cref="Source"/> to consume</param>
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
-		public static Result Consume(this ReadOnlySpan<Char> pattern, ref Source source, Compare comparisonType) => Consume(pattern, ref source, comparisonType, null);
+		public static Result Consume(this ReadOnlySpan<Char> pattern, ref Source source, Case comparisonType) => Consume(pattern, ref source, comparisonType, null);
 
 		/// <summary>
 		/// Attempt to consume the <paramref name="pattern"/> from the <paramref name="source"/>, adjusting the position in the <paramref name="source"/> as appropriate
@@ -91,7 +93,7 @@ namespace Stringier.Patterns {
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <param name="trace">The <see cref="ITrace"/> to record steps in.</param>
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
-		public static Result Consume(this ReadOnlySpan<Char> pattern, ref Source source, Compare comparisonType, ITrace? trace) {
+		public static Result Consume(this ReadOnlySpan<Char> pattern, ref Source source, Case comparisonType, ITrace? trace) {
 			Result Result = new Result(ref source);
 			pattern.Consume(ref source, ref Result, comparisonType, trace);
 			return Result;
@@ -100,10 +102,43 @@ namespace Stringier.Patterns {
 		/// <summary>
 		/// Compare this <paramref name="pattern"/> with the given <paramref name="comparisonType"/>.
 		/// </summary>
-		/// <param name="pattern">The <see cref="String"/> pattern.</param>
+		/// <param name="pattern">The <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/> pattern.</param>
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <returns>A new <see cref="Pattern"/> representing the <paramref name="pattern"/> compared with <paramref name="comparisonType"/>.</returns>
-		public static Pattern With(this ReadOnlySpan<Char> pattern, Compare comparisonType) => new StringLiteral(pattern, comparisonType);
+		public static Pattern With(this ReadOnlySpan<Char> pattern, Case comparisonType) => new StringLiteral(pattern, comparisonType);
+
+		/// <summary>
+		/// Compare this <paramref name="pattern"/> with the given <paramref name="comparisonType"/>.
+		/// </summary>
+		/// <param name="pattern">The <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/> pattern.</param>
+		/// <param name="comparisonType">Whether the comparison is sensitive to grapheme encoding.</param>
+		/// <returns>A new <see cref="Pattern"/> representing the <paramref name="pattern"/> compared with <paramref name="comparisonType"/>.</returns>
+		public static Pattern With(this ReadOnlySpan<Char> pattern, Grapheme comparisonType) => pattern.With(Case.NoPreference, comparisonType);
+
+		/// <summary>
+		/// Compare this <paramref name="pattern"/> with the given <paramref name="caseComparison"/> and <paramref name="graphemeComparison"/>.
+		/// </summary>
+		/// <param name="pattern">The <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/> pattern.</param>
+		/// <param name="caseComparison">Whether the comparison is sensitive to casing.</param>
+		/// <param name="graphemeComparison">Whether the comparison is sensitive to grapheme encoding.</param>
+		/// <returns>A new <see cref="Pattern"/> representing the <paramref name="pattern"/> compared with <paramref name="caseComparison"/> and <paramref name="graphemeComparison"/>.</returns>
+		public static Pattern With(this ReadOnlySpan<Char> pattern, Case caseComparison, Grapheme graphemeComparison) {
+			switch (graphemeComparison) {
+			case Grapheme.Insensitive:
+				IEnumerator<String[]> enumerator = Glyph.GetVariants(pattern).GetEnumerator();
+				String[] current;
+				_ = enumerator.MoveNext(); //The pattern wasn't empty, so we can safely do this for the first call
+				current = enumerator.Current;
+				Pattern result = current.Length == 1 ? current[0].With(caseComparison) : OneOf(caseComparison, current);
+				while (enumerator.MoveNext()) {
+					current = enumerator.Current;
+					result &= current.Length == 1 ? current[0].With(caseComparison) : OneOf(caseComparison, current);
+				}
+				return result;
+			default:
+				return new StringLiteral(pattern, caseComparison);
+			}
+		}
 
 		/// <summary>
 		/// Checks the first character in the <paramref name="source"/> against the first character of this <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/>.
@@ -123,7 +158,7 @@ namespace Stringier.Patterns {
 		/// <param name="source">The <see cref="Source"/> to consume from.</param>
 		/// <param name="result">The <see cref="Result"/> to store the result into.</param>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void Consume(this ReadOnlySpan<Char> pattern, ref Source source, ref Result result) => pattern.Consume(ref source, ref result, Compare.CaseSensitive, null);
+		internal static void Consume(this ReadOnlySpan<Char> pattern, ref Source source, ref Result result) => pattern.Consume(ref source, ref result, Case.Sensitive, null);
 
 		/// <summary>
 		/// Attempt to consume the <paramref name="pattern" />, adjusting the <paramref name="source"/> and <paramref name="result"/> as appropriate.
@@ -134,7 +169,7 @@ namespace Stringier.Patterns {
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <param name="trace">The <see cref="ITrace"/> to record steps in.</param>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void Consume(this ReadOnlySpan<Char> pattern, ref Source source, ref Result result, Compare comparisonType, ITrace? trace) {
+		internal static void Consume(this ReadOnlySpan<Char> pattern, ref Source source, ref Result result, Case comparisonType, ITrace? trace) {
 			if (pattern.Length > source.Length) {
 				result.Error = Error.EndOfSource;
 				trace?.Collect(result.Error, source.Position);
@@ -159,7 +194,7 @@ namespace Stringier.Patterns {
 		/// <param name="source">The <see cref="Source"/> to neglect from.</param>
 		/// <param name="result">The <see cref="Result"/> to store the result into.</param>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void Neglect(this ReadOnlySpan<Char> pattern, ref Source source, ref Result result) => pattern.Neglect(ref source, ref result, Compare.CaseSensitive, null);
+		internal static void Neglect(this ReadOnlySpan<Char> pattern, ref Source source, ref Result result) => pattern.Neglect(ref source, ref result, Case.Sensitive, null);
 
 		/// <summary>
 		/// Attempt to neglect the <paramref name="pattern" />, adjusting the <paramref name="source"/> and <paramref name="result"/> as appropriate.
@@ -170,7 +205,7 @@ namespace Stringier.Patterns {
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <param name="trace">The <see cref="ITrace"/> to record steps in.</param>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void Neglect(this ReadOnlySpan<Char> pattern, ref Source source, ref Result result, Compare comparisonType, ITrace? trace) {
+		internal static void Neglect(this ReadOnlySpan<Char> pattern, ref Source source, ref Result result, Case comparisonType, ITrace? trace) {
 			if (pattern.Length > source.Length) {
 				result.Error = Error.EndOfSource;
 				trace?.Collect(result.Error, source.Position);

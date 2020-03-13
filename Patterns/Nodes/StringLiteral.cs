@@ -20,27 +20,27 @@ namespace Stringier.Patterns.Nodes {
 		/// Initialize a new <see cref="StringLiteral"/> with the given <paramref name="string"/>.
 		/// </summary>
 		/// <param name="string">The <see cref="System.String"/> to parse.</param>
-		internal StringLiteral(String @string) : base(Compare.None) => String = @string;
+		internal StringLiteral(String @string) : base(Case.NoPreference) => String = @string;
 
 		/// <summary>
 		/// Intialize a new <see cref="StringLiteral"/> with the given <paramref name="string"/>.
 		/// </summary>
 		/// <param name="string">The <see cref="System.String"/> to parse.</param>
-		/// <param name="comparisonType">The <see cref="Compare"/> to use when parsing.</param>
-		internal StringLiteral(String @string, Compare comparisonType) : base(comparisonType) => String = @string;
+		/// <param name="comparisonType">The <see cref="Case"/> to use when parsing.</param>
+		internal StringLiteral(String @string, Case comparisonType) : base(comparisonType) => String = @string;
 
 		/// <summary>
 		/// Initialize a new <see cref="StringLiteral"/> with the given <paramref name="span"/>.
 		/// </summary>
 		/// <param name="span">The <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/> to parse.</param>
-		internal StringLiteral(ReadOnlySpan<Char> span) : base(Compare.None) => String = span.ToString();
+		internal StringLiteral(ReadOnlySpan<Char> span) : base(Case.NoPreference) => String = span.ToString();
 
 		/// <summary>
 		/// Intialize a new <see cref="StringLiteral"/> with the given <paramref name="span"/>.
 		/// </summary>
 		/// <param name="span">The <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/> to parse.</param>
-		/// <param name="comparisonType">The <see cref="Compare"/> to use when parsing.</param>
-		internal StringLiteral(ReadOnlySpan<Char> span, Compare comparisonType) : base(comparisonType) => String = span.ToString();
+		/// <param name="comparisonType">The <see cref="Case"/> to use when parsing.</param>
+		internal StringLiteral(ReadOnlySpan<Char> span, Case comparisonType) : base(comparisonType) => String = span.ToString();
 
 		/// <summary>
 		/// Checks the first character in the <paramref name="source"/> against the header of this node.
@@ -122,7 +122,7 @@ namespace Stringier.Patterns.Nodes {
 		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
 		internal override Pattern Concatenate(Char right) {
 			switch (ComparisonType) {
-			case Compare.None:
+			case Case.NoPreference:
 				return new StringLiteral(String + right.ToString());
 			default:
 				return new Concatenator(this, new CharLiteral(right));
@@ -139,7 +139,7 @@ namespace Stringier.Patterns.Nodes {
 				throw new ArgumentNullException(nameof(right));
 			}
 			switch (ComparisonType) {
-			case Compare.None:
+			case Case.NoPreference:
 				return new StringLiteral(String + right);
 			default:
 				return new Concatenator(this, new StringLiteral(right));

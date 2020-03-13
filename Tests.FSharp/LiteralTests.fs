@@ -17,7 +17,7 @@ type LiteralTests() =
 
     [<Fact>]
     member _.``consume case-insensitive`` () =
-        "Hello"/=Compare.CaseInsensitive >> ' '/=Compare.CaseInsensitive >> "World"/=Compare.CaseInsensitive
+        "Hello"/=Case.Insensitive >> ' '/=Case.Insensitive >> "World"/=Case.Insensitive
         |> consumes "HELLO WORLD" "HELLO WORLD"
         |> consumes "hello world" "hello world"
         |> ignore

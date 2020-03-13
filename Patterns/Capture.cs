@@ -136,6 +136,6 @@ namespace Stringier.Patterns {
 		/// </summary>
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <returns>A new <see cref="Pattern"/> representing this <see cref="Capture"/> compared with <paramref name="comparisonType"/>.</returns>
-		public Pattern With(Compare comparisonType) => new CaptureLiteral(this, comparisonType);
+		public Pattern With(Case comparisonType) => new CaptureLiteral(this, comparisonType);
 	}
 }

@@ -27,7 +27,7 @@ namespace Stringier.Patterns {
 		public static Result Consume(this String pattern, String source) {
 			Guard.NotNull(pattern, nameof(pattern));
 			Guard.NotNull(source, nameof(source));
-			return pattern.Consume(source, Compare.CaseSensitive);
+			return pattern.Consume(source, Case.Sensitive);
 		}
 
 		/// <summary>
@@ -37,7 +37,7 @@ namespace Stringier.Patterns {
 		/// <param name="source">The <see cref="String"/> to consume</param>
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
-		public static Result Consume(this String pattern, String source, Compare comparisonType) {
+		public static Result Consume(this String pattern, String source, Case comparisonType) {
 			Guard.NotNull(pattern, nameof(pattern));
 			Guard.NotNull(source, nameof(source));
 			Source src = new Source(source);
@@ -52,7 +52,7 @@ namespace Stringier.Patterns {
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
 		public static Result Consume(this String pattern, ReadOnlySpan<Char> source) {
 			Guard.NotNull(pattern, nameof(pattern));
-			return pattern.Consume(source, Compare.CaseSensitive);
+			return pattern.Consume(source, Case.Sensitive);
 		}
 
 		/// <summary>
@@ -62,7 +62,7 @@ namespace Stringier.Patterns {
 		/// <param name="source">The <see cref="ReadOnlySpan{T}"/> to consume</param>
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
-		public static Result Consume(this String pattern, ReadOnlySpan<Char> source, Compare comparisonType) {
+		public static Result Consume(this String pattern, ReadOnlySpan<Char> source, Case comparisonType) {
 			Guard.NotNull(pattern, nameof(pattern));
 			Source src = new Source(source);
 			return pattern.Consume(ref src, comparisonType);
@@ -76,7 +76,7 @@ namespace Stringier.Patterns {
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
 		public static Result Consume(this String pattern, ref Source source) {
 			Guard.NotNull(pattern, nameof(pattern));
-			return pattern.Consume(ref source, Compare.CaseSensitive, trace: null);
+			return pattern.Consume(ref source, Case.Sensitive, trace: null);
 		}
 
 		/// <summary>
@@ -88,7 +88,7 @@ namespace Stringier.Patterns {
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
 		public static Result Consume(this String pattern, ref Source source, ITrace? trace) {
 			Guard.NotNull(pattern, nameof(pattern));
-			return pattern.Consume(ref source, Compare.CaseSensitive, trace);
+			return pattern.Consume(ref source, Case.Sensitive, trace);
 		}
 
 		/// <summary>
@@ -98,7 +98,7 @@ namespace Stringier.Patterns {
 		/// <param name="source">The <see cref="Source"/> to consume</param>
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
-		public static Result Consume(this String pattern, ref Source source, Compare comparisonType) {
+		public static Result Consume(this String pattern, ref Source source, Case comparisonType) {
 			Guard.NotNull(pattern, nameof(pattern));
 			return Consume(pattern, ref source, comparisonType, null);
 		}
@@ -111,7 +111,7 @@ namespace Stringier.Patterns {
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <param name="trace">The <see cref="ITrace"/> to record steps in.</param>
 		/// <returns>A <see cref="Result"/> containing whether a match occured and the consumed string</returns>
-		public static Result Consume(this String pattern, ref Source source, Compare comparisonType, ITrace? trace) {
+		public static Result Consume(this String pattern, ref Source source, Case comparisonType, ITrace? trace) {
 			Guard.NotNull(pattern, nameof(pattern));
 			Result Result = new Result(ref source);
 			pattern.Consume(ref source, ref Result, comparisonType, trace);
@@ -220,23 +220,42 @@ namespace Stringier.Patterns {
 		/// <param name="pattern">The <see cref="String"/> pattern.</param>
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <returns>A new <see cref="Pattern"/> representing the <paramref name="pattern"/> compared with <paramref name="comparisonType"/>.</returns>
-		public static Pattern With(this String pattern, Compare comparisonType) {
+		public static Pattern With(this String pattern, Case comparisonType) {
 			Guard.NotNull(pattern, nameof(pattern));
 			Guard.NotEmpty(pattern, nameof(pattern));
-			switch (comparisonType) {
-			case Compare.GlyphInsensitive:
+			return new StringLiteral(pattern, comparisonType);
+		}
+
+		/// <summary>
+		/// Compare this <paramref name="pattern"/> with the given <paramref name="comparisonType"/>.
+		/// </summary>
+		/// <param name="pattern">The <see cref="String"/> pattern.</param>
+		/// <param name="comparisonType">Whether the comparison is sensitive to grapheme encoding.</param>
+		/// <returns>A new <see cref="Pattern"/> representing the <paramref name="pattern"/> compared with <paramref name="comparisonType"/>.</returns>
+		public static Pattern With(this String pattern, Grapheme comparisonType) => pattern.With(Case.NoPreference, comparisonType);
+
+		/// <summary>
+		/// Compare this <paramref name="pattern"/> with the given <paramref name="caseComparison"/> and <paramref name="graphemeComparison"/>.
+		/// </summary>
+		/// <param name="pattern">The <see cref="String"/> pattern.</param>
+		/// <param name="caseComparison">Whether the comparison is sensitive to casing.</param>
+		/// <param name="graphemeComparison">Whether the comparison is sensitive to grapheme encoding.</param>
+		/// <returns>A new <see cref="Pattern"/> representing the <paramref name="pattern"/> compared with <paramref name="caseComparison"/> and <paramref name="graphemeComparison"/>.</returns>
+		public static Pattern With(this String pattern, Case caseComparison, Grapheme graphemeComparison) {
+			switch (graphemeComparison) {
+			case Grapheme.Insensitive:
 				IEnumerator<String[]> enumerator = Glyph.GetVariants(pattern).GetEnumerator();
 				String[] current;
 				_ = enumerator.MoveNext(); //The pattern wasn't empty, so we can safely do this for the first call
 				current = enumerator.Current;
-				Pattern result = current.Length == 1 ? current[0] : OneOf(Compare.CaseInsensitive, current);
+				Pattern result = current.Length == 1 ? current[0].With(caseComparison) : OneOf(caseComparison, current);
 				while (enumerator.MoveNext()) {
 					current = enumerator.Current;
-					result &= current.Length == 1 ? current[0] : OneOf(Compare.CaseInsensitive, current);
+					result &= current.Length == 1 ? current[0].With(caseComparison) : OneOf(caseComparison, current);
 				}
 				return result;
 			default:
-				return new StringLiteral(pattern, comparisonType);
+				return new StringLiteral(pattern, caseComparison);
 			}
 		}
 
@@ -263,7 +282,7 @@ namespace Stringier.Patterns {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void Consume(this String pattern, ref Source source, ref Result result) {
 			Guard.NotNull(pattern, nameof(pattern));
-			pattern.Consume(ref source, ref result, Compare.CaseSensitive, trace: null);
+			pattern.Consume(ref source, ref result, Case.Sensitive, trace: null);
 		}
 
 		/// <summary>
@@ -275,7 +294,7 @@ namespace Stringier.Patterns {
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <param name="trace">The <see cref="ITrace"/> to record steps in.</param>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void Consume(this String pattern, ref Source source, ref Result result, Compare comparisonType, ITrace? trace) {
+		internal static void Consume(this String pattern, ref Source source, ref Result result, Case comparisonType, ITrace? trace) {
 			Guard.NotNull(pattern, nameof(pattern));
 			if (pattern.Length > source.Length) {
 				result.Error = Error.EndOfSource;
@@ -302,14 +321,14 @@ namespace Stringier.Patterns {
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <returns><see langword="true"/> if the value of the <paramref name="other"/> parameter is the same as this string; otherwise, <see langword="false"/>.</returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static Boolean Equals(this String @string, String other, Compare comparisonType) {
+		internal static Boolean Equals(this String @string, String other, Case comparisonType) {
 			Guard.NotNull(@string, nameof(@string));
 			Guard.NotNull(other, nameof(other));
 			switch (comparisonType) {
-			case Compare.None:
-			case Compare.CaseSensitive:
+			case Case.NoPreference:
+			case Case.Sensitive:
 				return @string.Equals(other, StringComparison.Ordinal);
-			case Compare.CaseInsensitive:
+			case Case.Insensitive:
 				return @string.Equals(other, StringComparison.OrdinalIgnoreCase);
 			default:
 				throw new ArgumentException($"{comparisonType} not handled", nameof(comparisonType));
@@ -324,13 +343,13 @@ namespace Stringier.Patterns {
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <returns><see langword="true"/> if the value of the <paramref name="other"/> parameter is the same as this string; otherwise, <see langword="false"/>.</returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static Boolean Equals(this String @string, ReadOnlySpan<Char> other, Compare comparisonType) {
+		internal static Boolean Equals(this String @string, ReadOnlySpan<Char> other, Case comparisonType) {
 			Guard.NotNull(@string, nameof(@string));
 			switch (comparisonType) {
-			case Compare.None:
-			case Compare.CaseSensitive:
+			case Case.NoPreference:
+			case Case.Sensitive:
 				return @string.Equals(other, StringComparison.Ordinal);
-			case Compare.CaseInsensitive:
+			case Case.Insensitive:
 				return @string.Equals(other, StringComparison.OrdinalIgnoreCase);
 			default:
 				throw new ArgumentException($"{comparisonType} not handled", nameof(comparisonType));
@@ -345,13 +364,13 @@ namespace Stringier.Patterns {
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <returns><see langword="true"/> if the value of the <paramref name="other"/> parameter is the same as this string; otherwise, <see langword="false"/>.</returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static Boolean Equals(this ReadOnlySpan<Char> span, String other, Compare comparisonType) {
+		internal static Boolean Equals(this ReadOnlySpan<Char> span, String other, Case comparisonType) {
 			Guard.NotNull(other, nameof(other));
 			switch (comparisonType) {
-			case Compare.None:
-			case Compare.CaseSensitive:
+			case Case.NoPreference:
+			case Case.Sensitive:
 				return span.Equals(other, StringComparison.Ordinal);
-			case Compare.CaseInsensitive:
+			case Case.Insensitive:
 				return span.Equals(other, StringComparison.OrdinalIgnoreCase);
 			default:
 				throw new ArgumentException($"{comparisonType} not handled", nameof(comparisonType));
@@ -366,12 +385,12 @@ namespace Stringier.Patterns {
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <returns><see langword="true"/> if the value of the <paramref name="other"/> parameter is the same as this string; otherwise, <see langword="false"/>.</returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static Boolean Equals(this ReadOnlySpan<Char> span, ReadOnlySpan<Char> other, Compare comparisonType) {
+		internal static Boolean Equals(this ReadOnlySpan<Char> span, ReadOnlySpan<Char> other, Case comparisonType) {
 			switch (comparisonType) {
-			case Compare.None:
-			case Compare.CaseSensitive:
+			case Case.NoPreference:
+			case Case.Sensitive:
 				return span.Equals(other, StringComparison.Ordinal);
-			case Compare.CaseInsensitive:
+			case Case.Insensitive:
 				return span.Equals(other, StringComparison.OrdinalIgnoreCase);
 			default:
 				throw new ArgumentException($"{comparisonType} not handled", nameof(comparisonType));
@@ -387,7 +406,7 @@ namespace Stringier.Patterns {
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static void Neglect(this String pattern, ref Source source, ref Result result) {
 			Guard.NotNull(pattern, nameof(pattern));
-			pattern.Neglect(ref source, ref result, Compare.CaseSensitive, null);
+			pattern.Neglect(ref source, ref result, Case.Sensitive, null);
 		}
 
 		/// <summary>
@@ -399,7 +418,7 @@ namespace Stringier.Patterns {
 		/// <param name="comparisonType">Whether the comparison is sensitive to casing.</param>
 		/// <param name="trace">The <see cref="ITrace"/> to record steps in.</param>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void Neglect(this String pattern, ref Source source, ref Result result, Compare comparisonType, ITrace? trace) {
+		internal static void Neglect(this String pattern, ref Source source, ref Result result, Case comparisonType, ITrace? trace) {
 			Guard.NotNull(pattern, nameof(pattern));
 			if (pattern.Length > source.Length) {
 				result.Error = Error.EndOfSource;

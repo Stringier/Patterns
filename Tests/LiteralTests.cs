@@ -57,8 +57,8 @@ namespace Tests {
 		}
 
 		[Fact]
-		public void Consume_CaseInsensitive() {
-			Pattern pattern = "Hello".With(Compare.CaseInsensitive).Then(' '.With(Compare.CaseInsensitive)).Then("World".With(Compare.CaseInsensitive));
+		public void Consume_Insensitive() {
+			Pattern pattern = "Hello".With(Case.Insensitive).Then(' '.With(Case.Insensitive)).Then("World".With(Case.Insensitive));
 			Claim.That(pattern)
 				.Consumes("HELLO WORLD", "HELLO WORLD")
 				.Consumes("hello world", "hello world");
@@ -66,14 +66,30 @@ namespace Tests {
 
 		[Fact]
 		public void Consume_GlyphInsensitive() {
-			Pattern pattern = "Ça-va".With(Compare.GlyphInsensitive);
+			Pattern pattern = "Ça-va".With(Grapheme.Insensitive);
 			Claim.That(pattern)
 				.Consumes("Ça-va", "\u00C7a-va")
 				.Consumes("Ça-va", "\u0043\u0327a-va");
-			pattern = "Jalapeño".With(Compare.GlyphInsensitive);
+			pattern = "Jalapeño".With(Grapheme.Insensitive);
 			Claim.That(pattern)
 				.Consumes("Jalapeño", "Jalape\u00F1o")
 				.Consumes("Jalapeño", "Jalape\u006E\u0303o");
+		}
+
+		[Fact]
+		public void Consume_CaseAndGlyphInsensitive() {
+			Pattern pattern = "Ça-va".With(Case.Insensitive, Grapheme.Insensitive);
+			Claim.That(pattern)
+				.Consumes("Ça-va", "\u00C7a-va")
+				.Consumes("ÇA-VA", "\u00C7A-VA")
+				.Consumes("Ça-va", "\u0043\u0327a-va")
+				.Consumes("ÇA-VA", "\u0043\u0327A-VA");
+			pattern = "Jalapeño".With(Case.Insensitive, Grapheme.Insensitive);
+			Claim.That(pattern)
+				.Consumes("Jalapeño", "Jalape\u00F1o")
+				.Consumes("JALAPEÑO", "JALAPE\u00D1O")
+				.Consumes("Jalapeño", "Jalape\u006E\u0303o")
+				.Consumes("JALAPEÑO", "JALAPE\u004E\u0303O");
 		}
 
 		[Fact]

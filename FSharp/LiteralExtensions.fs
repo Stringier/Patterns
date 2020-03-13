@@ -14,10 +14,10 @@ module LiteralExtensions =
         static member Literal(value:Glyph) = value.AsPattern()
         static member Literal(value:Capture ref) = (!value).AsPattern()
         static member Literal(value:System.Text.RegularExpressions.Regex) = value.AsPattern()
-        static member With(pattern:String, comparisonType:Compare) = pattern.With(comparisonType)
-        static member With(pattern:Char, comparisonType:Compare) = pattern.With(comparisonType)
-        static member With(pattern:Rune, comparisonType:Compare) = pattern.With(comparisonType)
-        static member With(pattern:Capture ref, comparisonType:Compare) = (!pattern).With(comparisonType)
+        static member With(pattern:String, comparisonType:Case) = pattern.With(comparisonType)
+        static member With(pattern:Char, comparisonType:Case) = pattern.With(comparisonType)
+        static member With(pattern:Rune, comparisonType:Case) = pattern.With(comparisonType)
+        static member With(pattern:Capture ref, comparisonType:Case) = (!pattern).With(comparisonType)
 
     let inline private literal< ^t, ^a, ^b when (^t or ^a) : (static member Literal : ^a -> ^b)> value = ((^t or ^a) : (static member Literal : ^a -> ^b)(value))
 

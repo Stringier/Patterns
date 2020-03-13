@@ -21,14 +21,14 @@ namespace Stringier.Patterns.Nodes {
 		/// Initialize a new <see cref="RuneLiteral"/> with the given <paramref name="rune"/>.
 		/// </summary>
 		/// <param name="rune"></param>
-		internal RuneLiteral(Rune rune) : base(Compare.None) => Rune = rune;
+		internal RuneLiteral(Rune rune) : base(Case.NoPreference) => Rune = rune;
 
 		/// <summary>
 		/// Initialize a new <see cref="RuneLiteral"/> with the given <paramref name="rune"/>.
 		/// </summary>
 		/// <param name="rune">The <see cref="System.Text.Rune"/> to parse.</param>
-		/// <param name="comparisonType">The <see cref="Compare"/> to use when parsing.</param>
-		internal RuneLiteral(Rune rune, Compare comparisonType) : base(comparisonType) => Rune = rune;
+		/// <param name="comparisonType">The <see cref="Case"/> to use when parsing.</param>
+		internal RuneLiteral(Rune rune, Case comparisonType) : base(comparisonType) => Rune = rune;
 
 		/// <summary>
 		/// Checks the first character in the <paramref name="source"/> against the header of this node.
