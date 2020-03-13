@@ -42,8 +42,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Defender.FSharp\Defender.FSharp.fsproj" />
-    <ProjectReference Include="..\FSharp\FSharp.fsproj" />
     <ProjectReference Include="..\Gibberish\Gibberish.csproj" />
+    <ProjectReference Include="..\Patterns.FSharp\Patterns.FSharp.fsproj" />
     <ProjectReference Include="..\Patterns\Patterns.csproj" />
   </ItemGroup>
 
