@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <PackageReference Include="Defender.Guards" Version="0.10.*" />
-    <PackageReference Include="Stringier.Core" Version="3.*.*" />
+    <PackageReference Include="Stringier.Core" Version="3.*" />
     <PackageReference Include="System.Memory" Version="4.5.*" />
   </ItemGroup>
 
