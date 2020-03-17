@@ -22,7 +22,8 @@ namespace Benchmarks {
 			new KeyChoice(ConsoleKey.D, "IPv4 Address", () => BenchmarkRunner.Run<IPv4AddressBenchmarks>()),
 			new KeyChoice(ConsoleKey.E, "LineComment", () => BenchmarkRunner.Run<LineCommentBenchmarks>()),
 			new KeyChoice(ConsoleKey.F, "Phone Number", () => BenchmarkRunner.Run<PhoneNumberBenchmarks>()),
-			new KeyChoice(ConsoleKey.G, "String Literal", () => BenchmarkRunner.Run<StringLiteralBenchmarks>()),
+			new KeyChoice(ConsoleKey.G, "Stress Tests", () => BenchmarkRunner.Run<StressTestBenchmarks>()),
+			new KeyChoice(ConsoleKey.H, "String Literal", () => BenchmarkRunner.Run<StringLiteralBenchmarks>()),
 			new BackKeyChoice(ConsoleKey.Q, "Quit", () => Environment.Exit(0)));
 
 		public static void Main() {

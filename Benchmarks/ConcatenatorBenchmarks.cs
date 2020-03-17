@@ -31,7 +31,7 @@ namespace Benchmarks {
 
 		public static readonly Pattern stringier = "Hello".Then(' ').Then("World");
 
-		[Params("Hello World", "Hello", "Failure")]
+		[Params("Hello World", "Failure")]
 		public String Source { get; set; }
 
 		[Benchmark]

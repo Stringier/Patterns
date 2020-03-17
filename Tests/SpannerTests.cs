@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
 using Defender;
 using Xunit;
+using Pidgin;
+using Sprache;
+using Stringier;
+using static Benchmarks.SpannerBenchmarks;
 
 namespace Tests {
 	public class SpannerTests : Trial {
@@ -18,5 +23,31 @@ namespace Tests {
 			Claim.That(Not(Many(';')))
 			.Consumes("123456789", "123456789;")
 			.FailsToConsume(";");
+
+		[Theory]
+		[InlineData("Hi!", true, "Hi!")]
+		[InlineData("Hi!Hi!", true, "Hi!Hi!")]
+		[InlineData("Hi!Hi!Hi!", true, "Hi!Hi!Hi!")]
+		[InlineData("Okay?", false, null)]
+		public void Pidgin(String source, Boolean success, String expected) {
+			Result<Char, String> result = pidgin.Parse(source);
+			Assert.Equal(success, result.Success);
+			if (success) {
+				Assert.Equal(expected, result.Value);
+			}
+		}
+
+		[Theory]
+		[InlineData("Hi!", true, "Hi!")]
+		[InlineData("Hi!Hi!", true, "Hi!Hi!")]
+		[InlineData("Hi!Hi!Hi!", true, "Hi!Hi!Hi!")]
+		[InlineData("Okay?", false, null)]
+		public void Sprache(String source, Boolean success, String expected) {
+			IResult<IEnumerable<String>> result = sprache.TryParse(source);
+			Assert.Equal(success, result.WasSuccessful);
+			if (success) {
+				Assert.Equal(expected, result.Value.Join());
+			}
+		}
 	}
 }

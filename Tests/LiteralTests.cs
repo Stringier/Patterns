@@ -5,6 +5,9 @@ using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
 using Defender;
 using Xunit;
+using Pidgin;
+using Sprache;
+using static Benchmarks.LiteralBenchmarks;
 
 namespace Tests {
 	public class LiteralTests : Trial {
@@ -63,6 +66,32 @@ namespace Tests {
 				.FailsToConsume("Hello")
 				.FailsToConsume("Hello!")
 				.FailsToConsume("Hello.");
+		}
+
+		[Theory]
+		[InlineData("Hello", true, "Hello")]
+		[InlineData("World", false, null)]
+		[InlineData("F", false, null)]
+		[InlineData("Failure", false, null)]
+		public void Pidgin(String source, Boolean success, String expected) {
+			Result<Char, String> result = pidgin.Parse(source);
+			Assert.Equal(success, result.Success);
+			if (success) {
+				Assert.Equal(expected, result.Value);
+			}
+		}
+
+		[Theory]
+		[InlineData("Hello", true, "Hello")]
+		[InlineData("World", false, null)]
+		[InlineData("F", false, null)]
+		[InlineData("Failure", false, null)]
+		public void Sprache(String source, Boolean success, String expected) {
+			IResult<String> result = sprache.TryParse(source);
+			Assert.Equal(success, result.WasSuccessful);
+			if (success) {
+				Assert.Equal(expected, result.Value);
+			}
 		}
 	}
 }

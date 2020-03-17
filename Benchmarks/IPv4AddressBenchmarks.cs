@@ -5,8 +5,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 using PCRE;
 using Pidgin;
-using static Pidgin.Parser;
-using static Pidgin.Parser<char>;
+using Sprache;
 using Stringier.Patterns;
 
 namespace Benchmarks {
@@ -14,7 +13,6 @@ namespace Benchmarks {
 	[SimpleJob(RuntimeMoniker.CoreRt31)]
 	[SimpleJob(RuntimeMoniker.Mono)]
 	[MemoryDiagnoser]
-	[SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "Oh ffs Sonar, IPv4 is a very well known tech thing.")]
 	public class IPv4AddressBenchmarks {
 		public static readonly Regex msregex = new Regex("^[012]?[0-9]{1,2}.[012]?[0-9]{1,2}.[012]?[0-9]{1,2}.[012]?[0-9]{1,2}");
 
@@ -25,10 +23,10 @@ namespace Benchmarks {
 		public static readonly PcreRegex pcreregexCompiled = new PcreRegex("^[012]?[0-9]{1,2}.[012]?[0-9]{1,2}.[012]?[0-9]{1,2}.[012]?[0-9]{1,2}", PcreOptions.Compiled);
 
 		public static readonly Parser<Char, String> pidginDigit = 
-			Try(OneOf('0', '1', '2'))
-			.Then(Try(Digit).OfType<String>())
-			.Then(Digit.OfType<String>());
-		public static readonly Parser<Char, String> pidgin = pidginDigit.Then(Char('.')).Then(pidginDigit).Then(Char('.')).Then(pidginDigit).Then(Char('.')).Then(pidginDigit);
+			Parser.Try(Parser.OneOf('0', '1', '2'))
+			.Then(Parser.Try(Parser.Digit).OfType<String>())
+			.Then(Parser.Digit.OfType<String>());
+		public static readonly Parser<Char, String> pidgin = pidginDigit.Then(Parser.Char('.')).Then(pidginDigit).Then(Parser.Char('.')).Then(pidginDigit).Then(Parser.Char('.')).Then(pidginDigit);
 
 		public static readonly Pattern stringierDigit = Pattern.Check(
 			(Char) => '0' <= Char && Char <= '2', false,
@@ -55,6 +53,6 @@ namespace Benchmarks {
 		public Result<Char, String> Pidgin() => pidgin.Parse(Source);
 
 		[Benchmark]
-		public Result Stringier() => stringier.Consume(Source);
+		public Stringier.Patterns.Result Stringier() => stringier.Consume(Source);
 	}
 }

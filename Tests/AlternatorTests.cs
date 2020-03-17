@@ -3,6 +3,10 @@ using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
 using Defender;
 using Xunit;
+using Pidgin;
+using Sprache;
+using static Benchmarks.AlternatorBenchmarks;
+
 
 namespace Tests {
 	public class AlternatorTests : Trial {
@@ -49,6 +53,30 @@ namespace Tests {
 				.Consumes("World", "Worldeater")
 				.FailsToConsume("Hello")
 				.FailsToConsume("Goodbye");
+		}
+
+		[Theory]
+		[InlineData("Hello", true, "Hello")]
+		[InlineData("Goodbye", true, "Goodbye")]
+		[InlineData("Failure", false, null)]
+		public void Pidgin(String source, Boolean success, String expected) {
+			Result<Char, String> result = pidgin.Parse(source);
+			Assert.Equal(success, result.Success);
+			if (success) {
+				Assert.Equal(expected, result.Value);
+			}
+		}
+
+		[Theory]
+		[InlineData("Hello", true, "Hello")]
+		[InlineData("Goodbye", true, "Goodbye")]
+		[InlineData("Failure", false, null)]
+		public void Sprache(String source, Boolean success, String expected) {
+			IResult<String> result = sprache.TryParse(source);
+			Assert.Equal(success, result.WasSuccessful);
+			if (success) {
+				Assert.Equal(expected, result.Value);
+			}
 		}
 	}
 }

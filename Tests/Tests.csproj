@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Benchmarks\Benchmarks.csproj" />
     <ProjectReference Include="..\Defender\Defender.csproj" />
     <ProjectReference Include="..\Gibberish\Gibberish.csproj" />
     <ProjectReference Include="..\Patterns\Patterns.csproj" />
