@@ -3,10 +3,11 @@ using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
 using Defender;
 using Xunit;
+using FParsec.CSharp;
 using Pidgin;
 using Sprache;
+using Benchmarks;
 using static Benchmarks.AlternatorBenchmarks;
-
 
 namespace Tests {
 	public class AlternatorTests : Trial {
@@ -53,6 +54,18 @@ namespace Tests {
 				.Consumes("World", "Worldeater")
 				.FailsToConsume("Hello")
 				.FailsToConsume("Goodbye");
+		}
+
+		[Theory]
+		[InlineData("Hello", true, "Hello")]
+		[InlineData("Goodbye", true, "Goodbye")]
+		[InlineData("Failure", false, null)]
+		public void FParsec(String source, Boolean success, String expected) {
+			var result = fparsec.Alternator.RunOnString(source);
+			Assert.Equal(success, result.IsSuccess);
+			if (success) {
+				Assert.Equal(expected, result.GetResult());
+			}
 		}
 
 		[Theory]

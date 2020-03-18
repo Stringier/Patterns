@@ -5,8 +5,10 @@ using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
 using Defender;
 using Xunit;
+using FParsec.CSharp;
 using Pidgin;
 using Sprache;
+using Benchmarks;
 using static Benchmarks.LiteralBenchmarks;
 
 namespace Tests {
@@ -66,6 +68,19 @@ namespace Tests {
 				.FailsToConsume("Hello")
 				.FailsToConsume("Hello!")
 				.FailsToConsume("Hello.");
+		}
+
+		[Theory]
+		[InlineData("Hello", true, "Hello")]
+		[InlineData("World", false, null)]
+		[InlineData("F", false, null)]
+		[InlineData("Failure", false, null)]
+		public void FParsec(String source, Boolean success, String expected) {
+			var result = fparsec.Literal.RunOnString(source);
+			Assert.Equal(success, result.IsSuccess);
+			if (success) {
+				Assert.Equal(expected, result.GetResult());
+			}
 		}
 
 		[Theory]

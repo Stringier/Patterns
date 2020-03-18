@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
+using FParsec.CSharp;
 using PCRE;
 using Pidgin;
 using Sprache;
@@ -33,24 +34,27 @@ namespace Benchmarks {
 		public String Source { get; set; }
 
 		[Benchmark]
-		public Match MSRegex() => msregex.Match(Source);
+		public void MSRegex() => msregex.Match(Source);
 
 		[Benchmark]
-		public Match MSRegexCompiled() => msregexCompiled.Match(Source);
+		public void MSRegexCompiled() => msregexCompiled.Match(Source);
 
 		[Benchmark]
-		public PcreMatch PcreRegex() => pcreregex.Match(Source);
+		public void PcreRegex() => pcreregex.Match(Source);
 
 		[Benchmark]
-		public PcreMatch PcreRegexCompiled() => pcreregexCompiled.Match(Source);
+		public void PcreRegexCompiled() => pcreregexCompiled.Match(Source);
 
 		[Benchmark]
-		public Result<Char, String> Pidgin() => pidgin.Parse(Source);
+		public void FParsec() => fparsec.Spanner.RunOnString(Source);
 
 		[Benchmark]
-		public IEnumerable<String> Sprache() => sprache.Parse(Source);
+		public void Pidgin() => pidgin.Parse(Source);
 
 		[Benchmark]
-		public Stringier.Patterns.Result Stringier() => stringier.Consume(Source);
+		public void Sprache() => sprache.Parse(Source);
+
+		[Benchmark]
+		public void Stringier() => stringier.Consume(Source);
 	}
 }

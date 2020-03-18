@@ -8,12 +8,14 @@
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.12.0" />
     <PackageReference Include="Consolator" Version="0.4.3" />
+    <PackageReference Include="FParsec.CSharp" Version="12.0.2" />
     <PackageReference Include="PCRE.NET" Version="0.12.0" />
     <PackageReference Include="Pidgin" Version="2.3.0" />
     <PackageReference Include="Sprache" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Benchmarks.FSharp\Benchmarks.FSharp.fsproj" />
     <ProjectReference Include="..\Gibberish\Gibberish.csproj" />
     <ProjectReference Include="..\Patterns\Patterns.csproj" />
   </ItemGroup>

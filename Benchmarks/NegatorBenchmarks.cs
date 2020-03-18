@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
+using FParsec.CSharp;
 using PCRE;
 using Pidgin;
 using Sprache;
@@ -40,18 +41,21 @@ namespace Benchmarks {
 		public String Source { get; set; }
 
 		[Benchmark]
-		public Match MSRegex() => msregex.Match(Source);
+		public void MSRegex() => msregex.Match(Source);
 
 		[Benchmark]
-		public PcreMatch PcreRegex() => pcreregex.Match(Source);
+		public void PcreRegex() => pcreregex.Match(Source);
 
 		[Benchmark]
-		public Result<Char, Unit> Pidgin() => pidgin.Parse(Source);
+		public void FParsec() => fparsec.Negator.RunOnString(Source);
 
 		[Benchmark]
-		public Object Sprache() => sprache.Parse(Source);
+		public void Pidgin() => pidgin.Parse(Source);
 
 		[Benchmark]
-		public Stringier.Patterns.Result Stringier() => stringier.Consume(Source);
+		public void Sprache() => sprache.Parse(Source);
+
+		[Benchmark]
+		public void Stringier() => stringier.Consume(Source);
 	}
 }

@@ -18,9 +18,9 @@ namespace Benchmarks {
 		public String Source { get; set; }
 
 		[Benchmark(Baseline = true)]
-		public Result Literal() => literal.Consume(Source);
+		public void Literal() => literal.Consume(Source);
 
 		[Benchmark]
-		public Result Fuzzer() => fuzzer.Consume(Source);
+		public void Fuzzer() => fuzzer.Consume(Source);
 	}
 }

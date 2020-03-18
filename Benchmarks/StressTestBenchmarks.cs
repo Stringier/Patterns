@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 using PCRE;
+using FParsec.CSharp;
 using Pidgin;
 using Sprache;
 using Stringier;
@@ -40,6 +41,12 @@ namespace Benchmarks {
 
 		[Benchmark]
 		public void PcreRegex_Bad() => pcreregex.Match(badGibberish);
+
+		[Benchmark]
+		public void FParsec_Good() => fparsec.Gibberish.RunOnString(goodGibberish);
+
+		[Benchmark]
+		public void FParsec_Bad() => fparsec.Gibberish.RunOnString(badGibberish);
 
 		[Benchmark]
 		public void Pidgin_Good() => pidgin.Parse(goodGibberish);

@@ -3,8 +3,10 @@ using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
 using Defender;
 using Xunit;
+using FParsec.CSharp;
 using Pidgin;
 using Sprache;
+using Benchmarks;
 using static Benchmarks.OptorBenchmarks;
 
 namespace Tests {
@@ -23,6 +25,17 @@ namespace Tests {
 			Claim.That(Not(Maybe("Hello")))
 				.Consumes("", "Hello")
 				.Consumes("World", "World");
+
+		[Theory]
+		[InlineData("Hello", true, "Hello")]
+		[InlineData("World", true, null)]
+		public void FParsec(String source, Boolean success, String expected) {
+			var result = fparsec.Optor.RunOnString(source);
+			Assert.Equal(success, result.IsSuccess);
+			if (success) {
+				Assert.Equal(expected, result.GetResult().GetValueOrDefault(null));
+			}
+		}
 
 		[Theory]
 		[InlineData("Hello", true, "Hello")]

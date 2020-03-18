@@ -18,9 +18,9 @@ namespace Benchmarks {
 		public String Source { get; set; }
 
 		[Benchmark(Baseline = true)]
-		public Result Alternator() => alternator.Consume(Source);
+		public void Alternator() => alternator.Consume(Source);
 
 		[Benchmark]
-		public Result Checker() => checker.Consume(Source);
+		public void Checker() => checker.Consume(Source);
 	}
 }
