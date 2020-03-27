@@ -3,6 +3,7 @@
 [![Gitter](https://badges.gitter.im/Stringier/community.svg)](https://gitter.im/Stringier/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Build Status](https://dev.azure.com/p-kell/Stringier/_apis/build/status/Stringier.Patterns?branchName=master)](https://dev.azure.com/p-kell/Stringier/_build/latest?definitionId=20&branchName=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/fd4ac1cad3d64e8da4cf100953e78e2f)](https://www.codacy.com/gh/Stringier/Patterns?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Stringier/Patterns&amp;utm_campaign=Badge_Grade)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=Stringier/Patterns)](https://dependabot.com)
 
 Provides support for pattern matching based parsing. The approach taken here is a high level declarative approach, most similar to SNOBOL style patterns, although it takes additional inspiration from Regex and parser combinators. It is it's own thing, however. But it's been designed first and foremost to be highly usable and resuable. It also happens to be fast and extremely lightweight, and official benchmarks are maintained against other major approaches to prove that claim.
 
