@@ -14,7 +14,7 @@
 		/// <remarks>
 		/// This essentially converts a mutable pattern back into a pattern, so any further combination works like normal, rather than mutating in-place.
 		/// </remarks>
-		public virtual void Seal() { }
+		public virtual Pattern Seal() => this;
 
 		/// <summary>
 		/// Get an empty mutable pattern.

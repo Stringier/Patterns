@@ -17,44 +17,23 @@ namespace Stringier.Patterns {
 		internal Pattern? Head;
 
 		/// <summary>
-		/// Whether the pattern is readonly or not.
-		/// </summary>
-		/// <remarks>
-		/// A <see cref="MutablePattern"/> when readonly is treated exactly like a normal <see cref="Pattern"/> and is no longer mutable.
-		/// </remarks>
-		private Boolean ReadOnly = false;
-
-		/// <summary>
 		/// Initialize a new <see cref="MutablePattern"/>.
 		/// </summary>
 		internal MutablePattern() { }
 
-		/// <summary>
-		/// Seals the pattern to prevent further modification. Only does something for mutable patterns.
-		/// </summary>
-		/// <remarks>
-		/// This essentially converts a mutable pattern back into a pattern, so any further combination works like normal, rather than mutating in-place.
-		/// </remarks>
-		public override void Seal() => ReadOnly = true;
+		/// <inheritdoc/>
+		public override Pattern Seal() {
+			if (Head is null) {
+				throw new PatternUndefinedException();
+			} else {
+				return Head;
+			}
+		}
 
-		/// <summary>
-		/// Checks the first character in the <paramref name="source"/> against the header of this node.
-		/// </summary>
-		/// <remarks>
-		/// This is primarily used to check whether a pattern may exist at the current position.
-		/// </remarks>
-		/// <param name="source">The <see cref="Source"/> to check against.</param>
-		/// <returns><c>true</c> if this <see cref="Pattern"/> may be present, <c>false</c> if definately not.</returns>
+		/// <inheritdoc/>
 		internal override Boolean CheckHeader(ref Source source) => Head?.CheckHeader(ref source) ?? false;
 
-
-		/// <summary>
-		/// Call the Consume parser of this <see cref="Pattern"/> on the <paramref name="source"/> with the <paramref name="result"/>.
-		/// </summary>
-		/// <param name="source">The <see cref="Source"/> to consume.</param>
-		/// <param name="result">A <see cref="Result"/> containing whether a match occured and the captured <see cref="String"/>.</param>
-		/// <param name="trace">The <see cref="ITrace"/> to record steps in.</param>
-		/// <exception cref="PatternUndefinedException">The pattern was attempted to be used before actually being defined.</exception>
+		/// <inheritdoc/>
 		internal override void Consume(ref Source source, ref Result result, ITrace? trace) {
 			if (Head is null) {
 				throw new PatternUndefinedException();
@@ -62,13 +41,7 @@ namespace Stringier.Patterns {
 			Head.Consume(ref source, ref result, trace);
 		}
 
-		/// <summary>
-		/// Call the Neglect parser of this <see cref="Pattern"/> on the <paramref name="source"/> with the <paramref name="result"/>.
-		/// </summary>
-		/// <param name="source">The <see cref="Source"/> to consume.</param>
-		/// <param name="result">A <see cref="Result"/> containing whether a match occured and the captured <see cref="String"/>.</param>
-		/// <param name="trace">The <see cref="ITrace"/> to record steps in.</param>
-		/// <exception cref="PatternUndefinedException">The pattern was attempted to be used before actually being defined.</exception>
+		/// <inheritdoc/>
 		internal override void Neglect(ref Source source, ref Result result, ITrace? trace) {
 			if (Head is null) {
 				throw new PatternUndefinedException();
@@ -78,51 +51,28 @@ namespace Stringier.Patterns {
 
 		#region Alternator
 
-		/// <summary>
-		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
-		/// </summary>
-		/// <param name="other">The <see cref="Pattern"/> to check if this <see cref="Pattern"/> does not match</param>
-		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
+		/// <inheritdoc/>
 		internal sealed override Pattern Alternate(Pattern other) {
-			if (ReadOnly) {
-				return base.Or(other);
-			}
 			Guard.NotNull(other, nameof(other));
 			if (Head is null) {
 				throw new PatternUndefinedException();
-			} else {
-				Head = Head.Alternate(other);
-				return this;
 			}
+			Head = Head.Alternate(other);
+			return this;
 		}
 
-		/// <summary>
-		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
-		/// </summary>
-		/// <param name="other">The <see cref="String"/> to check if this <see cref="Pattern"/> does not match</param>
-		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
+		/// <inheritdoc/>
 		internal sealed override Pattern Alternate(String other) {
-			if (ReadOnly) {
-				return base.Or(other);
-			}
 			Guard.NotNull(other, nameof(other));
 			if (Head is null) {
 				throw new PatternUndefinedException();
-			} else {
-				Head = Head.Alternate(other);
-				return this;
 			}
+			Head = Head.Alternate(other);
+			return this;
 		}
 
-		/// <summary>
-		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
-		/// </summary>
-		/// <param name="other">The <see cref="Char"/> to check if this <see cref="Pattern"/> does not match</param>
-		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/></returns>
+		/// <inheritdoc/>
 		internal sealed override Pattern Alternate(Char other) {
-			if (ReadOnly) {
-				return base.Or(other);
-			}
 			if (Head is null) {
 				throw new PatternUndefinedException();
 			}
@@ -134,15 +84,8 @@ namespace Stringier.Patterns {
 
 		#region Capturer
 
-		/// <summary>
-		/// Declares this <see cref="Pattern"/> should be captured into <paramref name="capture"/> for later reference.
-		/// </summary>
-		/// <param name="capture">A <see cref="Patterns.Capture"/> object to store into.</param>
-		/// <returns>A new <see cref="Pattern"/> which will capture its result into <paramref name="capture"/>.</returns>
+		/// <inheritdoc/>
 		public sealed override Pattern Capture(out Capture capture) {
-			if (ReadOnly) {
-				return base.Capture(out capture);
-			}
 			if (Head is null) {
 				throw new PatternUndefinedException();
 			}
@@ -154,43 +97,22 @@ namespace Stringier.Patterns {
 
 		#region Concatenator
 
-		/// <summary>
-		/// Concatenates the patterns so that this <see cref="Pattern"/> comes before <paramref name="other"/>
-		/// </summary>
-		/// <param name="other">The succeeding <see cref="Pattern"/></param>
-		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
+		/// <inheritdoc/>
 		internal sealed override Pattern Concatenate(Pattern other) {
-			if (ReadOnly) {
-				return base.Then(other);
-			}
 			Guard.NotNull(other, nameof(other));
 			Head = Head is null ? other : Head.Concatenate(other);
 			return this;
 		}
 
-		/// <summary>
-		/// Concatenates the patterns so that this <see cref="Pattern"/> comes before <paramref name="other"/>
-		/// </summary>
-		/// <param name="other">The succeeding <see cref="String"/></param>
-		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
+		/// <inheritdoc/>
 		internal sealed override Pattern Concatenate(String other) {
-			if (ReadOnly) {
-				return base.Then(other);
-			}
 			Guard.NotNull(other, nameof(other));
 			Head = Head is null ? new StringLiteral(other) : Head.Concatenate(other);
 			return this;
 		}
 
-		/// <summary>
-		/// Concatenates the patterns so that this <see cref="Pattern"/> comes before <paramref name="other"/>
-		/// </summary>
-		/// <param name="other">The succeeding <see cref="Char"/></param>
-		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/></returns>
+		/// <inheritdoc/>
 		internal sealed override Pattern Concatenate(Char other) {
-			if (ReadOnly) {
-				return base.Then(other);
-			}
 			Head = Head is null ? new CharLiteral(other) : Head.Concatenate(other);
 			return this;
 		}
@@ -199,17 +121,8 @@ namespace Stringier.Patterns {
 
 		#region Negator
 
-		/// <summary>
-		/// Marks this <see cref="Pattern"/> as negated.
-		/// </summary>
-		/// <returns>A new <see cref="Pattern"/> which is negated.</returns>
-		/// <remarks>
-		/// This exists to set up dispatching to the appropriate <see cref="Pattern"/> type. Dispatching happens to be faster than switching on a typeclass.
-		/// </remarks>
+		/// <inheritdoc/>
 		internal sealed override Pattern Negate() {
-			if (ReadOnly) {
-				return base.Negate();
-			}
 			if (Head is null) {
 				throw new PatternUndefinedException();
 			}
@@ -221,17 +134,8 @@ namespace Stringier.Patterns {
 
 		#region Optor
 
-		/// <summary>
-		/// Marks this <see cref="Pattern"/> as optional.
-		/// </summary>
-		/// <returns>A new <see cref="Pattern"/> which is optional.</returns>
-		/// <remarks>
-		/// This exists to set up dispatching to the appropriate <see cref="Pattern"/> type. Dispatching happens to be faster than switching on a typeclass.
-		/// </remarks>
+		/// <inheritdoc/>
 		internal sealed override Pattern Optional() {
-			if (ReadOnly) {
-				return base.Optional();
-			}
 			if (Head is null) {
 				throw new PatternUndefinedException();
 			}
@@ -243,15 +147,8 @@ namespace Stringier.Patterns {
 
 		#region Repeater
 
-		/// <summary>
-		/// Marks this <see cref="Pattern"/> as repeating <paramref name="count"/> times.
-		/// </summary>
-		/// <param name="count">The amount of times to repeat.</param>
-		/// <returns>A new <see cref="Pattern"/> repeated <paramref name="count"/> times.</returns>
+		/// <inheritdoc/>
 		public sealed override Pattern Repeat(Int32 count) {
-			if (ReadOnly) {
-				return base.Repeat(count);
-			}
 			if (Head is null) {
 				throw new PatternUndefinedException();
 			}
@@ -263,17 +160,8 @@ namespace Stringier.Patterns {
 
 		#region Spanner
 
-		/// <summary>
-		/// Marks this <see cref="Pattern"/> as spanning.
-		/// </summary>
-		/// <returns>A new <see cref="Pattern"/> which is spanning.</returns>
-		/// <remarks>
-		/// This exists to set up dispatching to the appropriate <see cref="Pattern"/> type. Dispatching happens to be faster than switching on a typeclass.
-		/// </remarks>
+		/// <inheritdoc/>
 		internal sealed override Pattern Span() {
-			if (ReadOnly) {
-				return base.Span();
-			}
 			if (Head is null) {
 				throw new PatternUndefinedException();
 			}
