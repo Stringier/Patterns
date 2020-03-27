@@ -20,9 +20,9 @@ namespace Benchmarks {
 
 		public static String badGibberish = Gibberish.Generate(ReductionFactor, bad: true);
 
-		public static readonly Regex msregex = new Regex(@"(?:[a-z]+| +)+", RegexOptions.Singleline);
+		public static readonly Regex msregex = new Regex(@"(?:[a-z]+| +)+$", RegexOptions.Singleline);
 
-		public static readonly PcreRegex pcreregex = new PcreRegex(@"(?:[a-z]+| +)+", PcreOptions.Singleline);
+		public static readonly PcreRegex pcreregex = new PcreRegex(@"(?:[a-z]+| +)+$", PcreOptions.Singleline);
 
 		public static readonly Parser<Char, String> pidgin = Parser.ManyString(Parser.Letter.Or(Parser.Char(' ')));
 
@@ -34,13 +34,7 @@ namespace Benchmarks {
 		public void MSRegex_Good() => msregex.Match(goodGibberish);
 
 		[Benchmark]
-		public void MSRegex_Bad() => msregex.Match(badGibberish);
-
-		[Benchmark]
 		public void PcreRegex_Good() => pcreregex.Match(goodGibberish);
-
-		[Benchmark]
-		public void PcreRegex_Bad() => pcreregex.Match(badGibberish);
 
 		[Benchmark]
 		public void FParsec_Good() => fparsec.Gibberish.RunOnString(goodGibberish);
