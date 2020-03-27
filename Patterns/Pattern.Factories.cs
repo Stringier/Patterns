@@ -4,17 +4,28 @@ using Defender;
 namespace Stringier.Patterns {
 	public abstract partial class Pattern {
 		/// <summary>
+		/// Creates a pattern representing a line comment introduced by the <paramref name="start"/> and ended by the <paramref name="stop"/> delimiters.
+		/// </summary>
+		/// <param name="start">The token delimiting the start of a block comment.</param>
+		/// <param name="stop">The token delimiting the stop of a block comment.</param>
+		/// <returns>A pattern representing a block comment.</returns>
+		public static Pattern BlockComment(String start, String stop) {
+			Guard.NotNull(start, nameof(start));
+			Guard.NotEmpty(start, nameof(start));
+			Guard.NotNull(stop, nameof(stop));
+			Guard.NotEmpty(stop, nameof(stop));
+			return NestedRange(start, stop);
+		}
+
+		/// <summary>
 		/// Creates a pattern representing a line comment introduced by the <paramref name="delimiter"/>.
 		/// </summary>
 		/// <param name="delimiter">The token delimiting the start of a line comment.</param>
 		/// <returns>A pattern representing a line comment.</returns>
 		public static Pattern LineComment(String delimiter) {
 			Guard.NotNull(delimiter, nameof(delimiter));
-			if (delimiter.Length == 0) {
-				throw new ArgumentException("Line comment delimiter can not be empty", nameof(delimiter));
-			} else {
-				return delimiter.Then(Many(Not(LineTerminator)));
-			}
+			Guard.NotEmpty(delimiter, nameof(delimiter));
+			return delimiter.Then(Many(Not(LineTerminator)));
 		}
 
 		/// <summary>
@@ -24,11 +35,8 @@ namespace Stringier.Patterns {
 		/// <returns>A pattern representing a string literal.</returns>
 		public static Pattern StringLiteral(String delimiter) {
 			Guard.NotNull(delimiter, nameof(delimiter));
-			if (delimiter.Length == 0) {
-				throw new ArgumentException("String literal delimiter can not be empty", nameof(delimiter));
-			} else {
-				return Range(delimiter, delimiter);
-			}
+			Guard.NotEmpty(delimiter, nameof(delimiter));
+			return Range(delimiter, delimiter);
 		}
 
 		/// <summary>
@@ -38,11 +46,10 @@ namespace Stringier.Patterns {
 		/// <param name="escape">The token escaping the <paramref name="delimiter"/>.</param>
 		/// <returns>A pattern representing a string literal.</returns>
 		public static Pattern StringLiteral(String delimiter, String escape) {
+			// escape parameter not being nullable is not an error. It shouldn't appear as nullable. If you don't want an escape, don't use the parameter. However, we can reasonably handle that case without exceptions, so don't even bother with that mess.
 			Guard.NotNull(delimiter, nameof(delimiter));
-			Guard.NotNull(escape, nameof(escape));
-			if (delimiter.Length == 0) {
-				throw new ArgumentException("String literal delimiter can not be empty", nameof(delimiter));
-			} else if (escape.Length == 0) {
+			Guard.NotNull(delimiter, nameof(delimiter));
+			if (escape is null || escape.Length == 0) {
 				return Range(delimiter, delimiter);
 			} else {
 				return Range(delimiter, delimiter, escape);
