@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 using Defender;
@@ -18,14 +19,6 @@ namespace Stringier.Patterns {
 		private readonly ReadOnlySpan<Char> Buffer;
 
 		/// <summary>
-		/// The hash code of this instance.
-		/// </summary>
-		/// <remarks>
-		/// We don't have an actual, immutible, way to get a hash code computed from the other fields in this struct. As a result, we have to create and manage hash codes ourself.
-		/// </remarks>
-		private readonly Int32 HashCode;
-
-		/// <summary>
 		/// Construct a new <see cref="Source"/> from the specified <paramref name="string"/>
 		/// </summary>
 		/// <param name="string">A <see cref="String"/> to use as a source</param>
@@ -33,7 +26,6 @@ namespace Stringier.Patterns {
 			Guard.NotNull(@string, nameof(@string));
 			Buffer = @string.AsSpan();
 			Position = 0;
-			HashCode = Rng.Next();
 		}
 
 		/// <summary>
@@ -46,7 +38,6 @@ namespace Stringier.Patterns {
 				Buffer = Reader.ReadToEnd().AsSpan();
 			}
 			Position = 0;
-			HashCode = Rng.Next();
 		}
 
 		/// <summary>
@@ -56,7 +47,6 @@ namespace Stringier.Patterns {
 		public Source(Span<Char> span) {
 			Buffer = span;
 			Position = 0;
-			HashCode = Rng.Next();
 		}
 
 		/// <summary>
@@ -66,7 +56,6 @@ namespace Stringier.Patterns {
 		public Source(ReadOnlySpan<Char> span) {
 			Buffer = span;
 			Position = 0;
-			HashCode = Rng.Next();
 		}
 
 		/// <summary>
@@ -76,7 +65,6 @@ namespace Stringier.Patterns {
 		public Source(Result result) {
 			Buffer = result.AsSpan();
 			Position = 0;
-			HashCode = Rng.Next();
 		}
 
 		/// <summary>
@@ -124,7 +112,11 @@ namespace Stringier.Patterns {
 		/// Returns the hash code for this instance.
 		/// </summary>
 		/// <returns>A 32-bit signed integer hash code.</returns>
-		public override Int32 GetHashCode() => HashCode;
+		/// <remarks>
+		/// This doesn't really get a hash code, and always returns <c>0</c>. <see cref="Source"/> can not be used in a situation where a hash code would be usable, and is therefore not designed to be used.
+		/// </remarks>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public override Int32 GetHashCode() => 0;
 
 		/// <summary>
 		/// Attempt to restore the state of this <see cref="Source"/> from the specified <paramref name="State"/>.
