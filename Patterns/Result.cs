@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Stringier.Patterns.Debugging;
 
 namespace Stringier.Patterns {
@@ -115,6 +116,7 @@ namespace Stringier.Patterns {
 		/// Returns the hash code for this instance.
 		/// </summary>
 		/// <returns>A 32-bit signed integer hash code.</returns>
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public override Int32 GetHashCode() => Source.GetHashCode() ^ Start.GetHashCode();
 
 		/// <summary>

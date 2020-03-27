@@ -24,7 +24,7 @@ namespace Benchmarks {
 
 		public static readonly PcreRegex pcreregex = new PcreRegex(@"(?:[a-z]+| +)+$", PcreOptions.Singleline);
 
-		public static readonly Parser<Char, String> pidgin = Parser.ManyString(Parser.Letter.Or(Parser.Char(' ')));
+		public static readonly Parser<Char, String> pidgin = Parser.Letter.Or(Parser.Char(' ')).ManyString();
 
 		public static readonly Sprache.Parser<String> sprache = Parse.Letter.Or(Parse.Char(' ')).Many().End().Text();
 

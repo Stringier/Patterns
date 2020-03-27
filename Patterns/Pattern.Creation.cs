@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
-using Stringier.Patterns.Nodes;
 using Defender;
+using Stringier.Patterns.Nodes;
 
 namespace Stringier.Patterns {
 	public abstract partial class Pattern {
@@ -25,45 +25,45 @@ namespace Stringier.Patterns {
 		public static Pattern operator |(Pattern left, Pattern right) => left.Alternate(right);
 
 		/// <summary>
-		/// Declares <paramref name="right"/> to be an alternate of this <see cref="Pattern"/>.
+		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
 		/// </summary>
-		/// <param name="right">The <see cref="Pattern"/> to check if this <see cref="Pattern"/> does not match.</param>
-		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
-		internal virtual Pattern Alternate(Pattern right) {
-			Guard.NotNull(right, nameof(right));
-			return new Alternator(this, right);
+		/// <param name="other">The <see cref="Pattern"/> to check if this <see cref="Pattern"/> does not match.</param>
+		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/>.</returns>
+		internal virtual Pattern Alternate(Pattern other) {
+			Guard.NotNull(other, nameof(other));
+			return new Alternator(this, other);
 		}
 
 		/// <summary>
-		/// Declares <paramref name="right"/> to be an alternate of this <see cref="Pattern"/>.
+		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
 		/// </summary>
-		/// <param name="right">The <see cref="Char"/> to check if this <see cref="Pattern"/> does not match.</param>
-		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
-		internal virtual Pattern Alternate(Char right) => new Alternator(this, new CharLiteral(right));
+		/// <param name="other">The <see cref="Char"/> to check if this <see cref="Pattern"/> does not match.</param>
+		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/>.</returns>
+		internal virtual Pattern Alternate(Char other) => new Alternator(this, new CharLiteral(other));
 
 		/// <summary>
-		/// Declares <paramref name="right"/> to be an alternate of this <see cref="Pattern"/>.
+		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
 		/// </summary>
-		/// <param name="right">The <see cref="Rune"/> to check if this <see cref="Pattern"/> does not match.</param>
-		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
-		internal virtual Pattern Alternate(Rune right) => new Alternator(this, new RuneLiteral(right));
+		/// <param name="other">The <see cref="Rune"/> to check if this <see cref="Pattern"/> does not match.</param>
+		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/>.</returns>
+		internal virtual Pattern Alternate(Rune other) => new Alternator(this, new RuneLiteral(other));
 
 		/// <summary>
-		/// Declares <paramref name="right"/> to be an alternate of this <see cref="Pattern"/>.
+		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
 		/// </summary>
-		/// <param name="right">The <see cref="String"/> to check if this <see cref="Pattern"/> does not match.</param>
-		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="right"/>.</returns
-		internal virtual Pattern Alternate(String right) {
-			Guard.NotNull(right, nameof(right));
-			return new Alternator(this, new StringLiteral(right));
+		/// <param name="other">The <see cref="String"/> to check if this <see cref="Pattern"/> does not match.</param>
+		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/>.</returns
+		internal virtual Pattern Alternate(String other) {
+			Guard.NotNull(other, nameof(other));
+			return new Alternator(this, new StringLiteral(other));
 		}
 
 		/// <summary>
-		/// Declares <paramref name="right"/> to be an alternate of this <see cref="Pattern"/>.
+		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
 		/// </summary>
-		/// <param name="right">The <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/> to check if this <see cref="Pattern"/> does not match.</param>
-		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="right"/>.</returns
-		internal virtual Pattern Alternate(ReadOnlySpan<Char> right) => new Alternator(this, new StringLiteral(right));
+		/// <param name="other">The <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/> to check if this <see cref="Pattern"/> does not match.</param>
+		/// <returns>A new <see cref="Pattern"/> alternating this <see cref="Pattern"/> and <paramref name="other"/>.</returns
+		internal virtual Pattern Alternate(ReadOnlySpan<Char> other) => new Alternator(this, new StringLiteral(other));
 
 		/// <summary>
 		/// Declares <paramref name="other"/> to be an alternate of this <see cref="Pattern"/>.
@@ -274,45 +274,45 @@ namespace Stringier.Patterns {
 		public static Pattern operator &(Pattern left, Pattern right) => left.Concatenate(right);
 
 		/// <summary>
-		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="right"/> <see cref="Pattern"/>.
+		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="other"/> <see cref="Pattern"/>.
 		/// </summary>
-		/// <param name="right">The succeeding <see cref="Pattern"/>.</param>
-		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
-		internal virtual Pattern Concatenate(Pattern right) {
-			Guard.NotNull(right, nameof(right));
-			return new Concatenator(this, right);
+		/// <param name="other">The succeeding <see cref="Pattern"/>.</param>
+		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/>.</returns>
+		internal virtual Pattern Concatenate(Pattern other) {
+			Guard.NotNull(other, nameof(other));
+			return new Concatenator(this, other);
 		}
 
 		/// <summary>
-		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="right"/> <see cref="Char"/>.
+		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="other"/> <see cref="Char"/>.
 		/// </summary>
-		/// <param name="right">The succeeding <see cref="Char"/>.</param>
-		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
-		internal virtual Pattern Concatenate(Char right) => new Concatenator(this, new CharLiteral(right));
+		/// <param name="other">The succeeding <see cref="Char"/>.</param>
+		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/>.</returns>
+		internal virtual Pattern Concatenate(Char other) => new Concatenator(this, new CharLiteral(other));
 
 		/// <summary>
-		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="right"/> <see cref="Rune"/>.
+		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="other"/> <see cref="Rune"/>.
 		/// </summary>
-		/// <param name="right">The succeeding <see cref="Rune"/>.</param>
-		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="right"/>.</returns>
-		internal virtual Pattern Concatenate(Rune right) => new Concatenator(this, new RuneLiteral(right));
+		/// <param name="other">The succeeding <see cref="Rune"/>.</param>
+		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/>.</returns>
+		internal virtual Pattern Concatenate(Rune other) => new Concatenator(this, new RuneLiteral(other));
 
 		/// <summary>
-		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="right"/> <see cref="String"/>.
+		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="other"/> <see cref="String"/>.
 		/// </summary>
-		/// <param name="right">The succeeding <see cref="String"/>.</param>
-		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="right"/>.</returns
-		internal virtual Pattern Concatenate(String right) {
-			Guard.NotNull(right, nameof(right));
-			return new Concatenator(this, new StringLiteral(right));
+		/// <param name="other">The succeeding <see cref="String"/>.</param>
+		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/>.</returns
+		internal virtual Pattern Concatenate(String other) {
+			Guard.NotNull(other, nameof(other));
+			return new Concatenator(this, new StringLiteral(other));
 		}
 
 		/// <summary>
-		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="right"/> <see cref="String"/>.
+		/// Concatenates the nodes so that this <see cref="Pattern"/> comes before the <paramref name="other"/> <see cref="String"/>.
 		/// </summary>
-		/// <param name="right">The succeeding <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/>.</param>
-		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="right"/>.</returns
-		internal virtual Pattern Concatenate(ReadOnlySpan<Char> right) => new Concatenator(this, new StringLiteral(right));
+		/// <param name="other">The succeeding <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/>.</param>
+		/// <returns>A new <see cref="Pattern"/> concatenating this <see cref="Pattern"/> and <paramref name="other"/>.</returns
+		internal virtual Pattern Concatenate(ReadOnlySpan<Char> other) => new Concatenator(this, new StringLiteral(other));
 
 		/// <summary>
 		/// Concatenates the patterns so that this <see cref="Pattern"/> comes before <paramref name="other"/>

@@ -19,14 +19,14 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageIcon>Logo.png</PackageIcon>
-		<Version>3.0.0-beta.1</Version>
+		<Version>3.0.0</Version>
 		<Description>Provides support for pattern matching based parsing.</Description>
 		<Product>Stringier</Product>
 	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Defender.Guards" Version="1.*" />
-    <PackageReference Include="Stringier.Core" Version="3.*" />
+    <PackageReference Include="Stringier.Core" Version="3.1.*" />
     <PackageReference Include="System.Memory" Version="4.5.*" />
   </ItemGroup>
 
