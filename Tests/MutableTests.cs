@@ -1,21 +1,18 @@
 ﻿using System;
 using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
-using Defender;
 using Xunit;
 
 namespace Tests {
-	public class MutableTests : Trial {
+	public class MutableTests {
 		[Fact]
 		public void Mutate_And_Consume() {
 			Pattern pattern = Mutable();
 			pattern.Then("Hello").Then(' ').Then("world");
-			Claim.That(pattern)
-				.Consumes("Hello world", "Hello world");
+			ResultAssert.Captures("Hello world", pattern.Consume("Hello world"));
 			Not(pattern).Seal();
-			Claim.That(pattern)
-				.Consumes("Bacon cakes", "Bacon cakes")
-				.FailsToConsume("Hello world");
+			ResultAssert.Captures("Bacon cakes", pattern.Consume("Bacon cakes"));
+			ResultAssert.Fails(pattern.Consume("Hello world"));
 		}
 
 		[Fact]
@@ -23,12 +20,11 @@ namespace Tests {
 			Pattern pattern = Mutable();
 			pattern.Then("hi!").Then(EndOfSource | pattern);
 			pattern.Seal();
-			Claim.That(pattern)
-				.Consumes("hi!", "hi!")
-				.Consumes("hi!hi!", "hi!hi!")
-				.Consumes("hi!hi!hi!", "hi!hi!hi!")
-				.Consumes("hi!hi!hi!hi!", "hi!hi!hi!hi!")
-				.FailsToConsume("");
+			ResultAssert.Captures("hi!", pattern.Consume("hi!"));
+			ResultAssert.Captures("hi!hi!", pattern.Consume("hi!hi!"));
+			ResultAssert.Captures("hi!hi!hi!", pattern.Consume("hi!hi!hi!"));
+			ResultAssert.Captures("hi!hi!hi!hi!", pattern.Consume("hi!hi!hi!hi!"));
+			ResultAssert.Fails(pattern.Consume(""));
 		}
 
 		[Fact]
@@ -40,12 +36,11 @@ namespace Tests {
 			Pattern factor = (term | parenExpression) & ('+'.Or('-')) & (term | parenExpression);
 			expression.Then(factor | term | parenExpression);
 			expression.Seal();
-			Claim.That(expression)
-				.Consumes("3+2", "3+2")
-				.Consumes("3+(1+2)", "3+(1+2)")
-				.Consumes("(1+2)+3", "(1+2)+3")
-				.Consumes("(1+2)-(3+4)", "(1+2)-(3+4)")
-				.Consumes("(1+(2+3))-4", "(1+(2+3))-4");
+			ResultAssert.Captures("3+2", expression.Consume("3+2"));
+			ResultAssert.Captures("3+(1+2)", expression.Consume("3+(1+2)"));
+			ResultAssert.Captures("(1+2)+3", expression.Consume("(1+2)+3"));
+			ResultAssert.Captures("(1+2)-(3+4)", expression.Consume("(1+2)-(3+4)"));
+			ResultAssert.Captures("(1+(2+3))-4", expression.Consume("(1+(2+3))-4"));
 		}
 	}
 }

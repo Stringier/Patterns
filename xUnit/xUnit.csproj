@@ -1,37 +1,37 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>8.0</LangVersion>
 		<Nullable>enable</Nullable>
-		<RootNamespace>Defender</RootNamespace>
+		<RootNamespace>Xunit</RootNamespace>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<Authors>Patrick Kelly</Authors>
-		<Copyright>2019</Copyright>
+		<Copyright>2020</Copyright>
 		<PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/Entomy/Stringier</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Entomy/Stringier</PackageProjectUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>stringier, defender, test, testing, unit test, unit tests, unit testing</PackageTags>
-		<Version>2.3.0</Version>
-		<Description>Provides extensions to Defender for unit testing Patterns</Description>
-		<PackageId>Stringier.Patterns.Defender</PackageId>
+		<PackageTags>stringier, xunit, test, testing, unit test, unit tests, unit testing</PackageTags>
+		<Version>3.0.0</Version>
+		<Description>Provides extensions to xunit for unit testing Patterns</Description>
+		<PackageId>Stringier.Patterns.Xunit</PackageId>
 		<Product>Stringier</Product>
 		<PackageIcon>Logo.png</PackageIcon>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Patterns\Patterns.csproj" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\Logo.png" Pack="true" Visible="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Defender.Trials" Version="0.10.*" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\Patterns\Patterns.csproj" />
+	  <PackageReference Include="xunit.assert" Version="2.4.1" />
 	</ItemGroup>
 
 </Project>

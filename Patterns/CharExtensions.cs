@@ -4,6 +4,9 @@ using Stringier.Patterns.Nodes;
 using Defender;
 
 namespace Stringier.Patterns {
+	/// <summary>
+	/// Provides <see cref="Pattern"/> related extensions to <see cref="Char"/>.
+	/// </summary>
 	public static class CharExtensions {
 		/// <summary>
 		/// Get the <paramref name="char"/> as a <see cref="Pattern"/>.

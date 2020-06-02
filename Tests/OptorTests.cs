@@ -1,7 +1,6 @@
 ﻿using System;
 using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
-using Defender;
 using Xunit;
 using FParsec.CSharp;
 using Pidgin;
@@ -10,21 +9,23 @@ using Benchmarks;
 using static Benchmarks.OptorBenchmarks;
 
 namespace Tests {
-	public class OptorTests : Trial {
+	public class OptorTests {
 		[Fact]
 		public void Constructor() => Maybe("Hello");
 
 		[Fact]
-		public void Consume() =>
-			Claim.That(Maybe("Hello"))
-				.Consumes("Hello", "Hello World")
-				.Consumes("", "Goodbye World");
+		public void Consume() {
+			Pattern pattern = Maybe("Hello");
+			ResultAssert.Captures("Hello", pattern.Consume("Hello World"));
+			ResultAssert.Captures("", pattern.Consume("Goodbye World"));
+		}
 
 		[Fact]
-		public void Neglect() =>
-			Claim.That(Not(Maybe("Hello")))
-				.Consumes("", "Hello")
-				.Consumes("World", "World");
+		public void Neglect() {
+			Pattern pattern = Not(Maybe("Hello"));
+			ResultAssert.Captures("", pattern.Consume("Hello"));
+			ResultAssert.Captures("World", pattern.Consume("World"));
+		}
 
 		[Theory]
 		[InlineData("Hello", true, "Hello")]

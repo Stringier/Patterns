@@ -1,7 +1,6 @@
 ﻿using System;
 using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
-using Defender;
 using Xunit;
 using FParsec.CSharp;
 using Pidgin;
@@ -10,28 +9,28 @@ using Benchmarks;
 using static Benchmarks.ConcatenatorBenchmarks;
 
 namespace Tests {
-	public class ConcatenatorTests : Trial {
+	public class ConcatenatorTests {
 		[Fact]
 		public void Constructor() => "Hello".Then(' ').Then("world");
 
 		[Fact]
 		public void Consume() {
-			Claim.That("Hello".Then(' ').Then("world"))
-				.Consumes("Hello world", "Hello world")
-				.FailsToConsume("Goodbye world");
-			Claim.That("Goodbye".Then(' ').Then("world"))
-				.Consumes("Goodbye world", "Goodbye world")
-				.FailsToConsume("Hello world");
+			Pattern pattern = "Hello".Then(' ').Then("world");
+			ResultAssert.Captures("Hello world", pattern.Consume("Hello world"));
+			ResultAssert.Fails(pattern.Consume("Goodbye world"));
+			pattern = "Goodbye".Then(' ').Then("world");
+			ResultAssert.Captures("Goodbye world", pattern.Consume("Goodbye world"));
+			ResultAssert.Fails(pattern.Consume("Hello world"));
 		}
 
 		[Fact]
 		public void Neglect() {
-			Claim.That(Not("Hello".Then('!')))
-				.Consumes("Hello.", "Hello.")
-				.Consumes("Oh no!", "Oh no!")
-				.Consumes("Oh no?", "Oh no?")
-				.FailsToConsume("Hello")
-				.FailsToConsume("Hello!");
+			Pattern pattern = Not("Hello".Then('!'));
+			ResultAssert.Captures("Hello.", pattern.Consume("Hello."));
+			ResultAssert.Captures("Oh no!", pattern.Consume("Oh no!"));
+			ResultAssert.Captures("Oh no?", pattern.Consume("Oh no?"));
+			ResultAssert.Fails(pattern.Consume("Hello"));
+			ResultAssert.Fails(pattern.Consume("Hello!"));
 		}
 
 		[Theory]

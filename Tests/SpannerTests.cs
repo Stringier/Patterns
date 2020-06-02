@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
-using Defender;
 using Xunit;
 using FParsec.CSharp;
 using Pidgin;
@@ -12,19 +11,21 @@ using Benchmarks;
 using static Benchmarks.SpannerBenchmarks;
 
 namespace Tests {
-	public class SpannerTests : Trial {
+	public class SpannerTests {
 		[Fact]
-		public void Consume() =>
-			Claim.That(Many(' '))
-			.Consumes(" ", " Hi!")
-			.Consumes("    ", "    Hi!")
-			.FailsToConsume("Hi!  ");
+		public void Consume() {
+			Pattern pattern = Many(' ');
+			ResultAssert.Captures(" ", pattern.Consume(" Hi!"));
+			ResultAssert.Captures("    ", pattern.Consume("    Hi!"));
+			ResultAssert.Fails(pattern.Consume("Hi!  "));
+		}
 
 		[Fact]
-		public void Neglect() =>
-			Claim.That(Not(Many(';')))
-			.Consumes("123456789", "123456789;")
-			.FailsToConsume(";");
+		public void Neglect() {
+			Pattern pattern = Not(Many(';'));
+			ResultAssert.Captures("123456789", pattern.Consume("123456789;"));
+			ResultAssert.Fails(pattern.Consume(";"));
+		}
 
 		[Theory]
 		[InlineData("Hi!", true, "Hi!")]

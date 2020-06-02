@@ -16,14 +16,15 @@ namespace Stringier.Patterns.Debugging {
 		/// <summary>
 		/// Collect the parameters as a trace step.
 		/// </summary>
-		/// <param name="text"></param>
-		/// <param name="position"></param>
+		/// <param name="text">The text consumed.</param>
+		/// <param name="position">The position at which <paramref name="text"/> began.</param>
 		public void Collect(String text, Int32 position);
 
 		/// <summary>
 		/// Collect the parameters as a trace step.
 		/// </summary>
-		/// <param name="error"></param>
+		/// <param name="error">The parser <see cref="Debugging.Error"/>.</param>
+		/// <param name="position">The position at which the parser failed.</param>
 		public void Collect(Error error, Int32 position);
 	}
 }

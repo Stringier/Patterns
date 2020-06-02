@@ -1,7 +1,6 @@
 ﻿using System;
 using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
-using Defender;
 using Xunit;
 using FParsec.CSharp;
 using Pidgin;
@@ -10,7 +9,7 @@ using Benchmarks;
 using static Benchmarks.AlternatorBenchmarks;
 
 namespace Tests {
-	public class AlternatorTests : Trial {
+	public class AlternatorTests {
 		[Fact]
 		public void Constructor() => "Hello".Or("Goodbye");
 
@@ -19,41 +18,36 @@ namespace Tests {
 		[Fact]
 		public void Consume() {
 			Pattern pattern = "Hello".Or("Goodbye");
-			Claim.That(pattern)
-				.Consumes("Hello", "Hello")
-				.Consumes("Goodbye", "Goodbye")
-				.FailsToConsume("!")
-				.FailsToConsume("How are you?");
+			ResultAssert.Captures("Hello", pattern.Consume("Hello"));
+			ResultAssert.Captures("Goodbye", pattern.Consume("Goodbye"));
+			ResultAssert.Fails(pattern.Consume("!"));
+			ResultAssert.Fails(pattern.Consume("How are you?"));
 
 			pattern = "Hello".Or("Hi").Or("Howdy");
-			Claim.That(pattern)
-				.Consumes("Hello", "Hello")
-				.Consumes("Hi", "Hi")
-				.Consumes("Howdy", "Howdy")
-				.FailsToConsume("Goodbye");
+			ResultAssert.Captures("Hello", pattern.Consume("Hello"));
+			ResultAssert.Captures("Hi", pattern.Consume("Hi"));
+			ResultAssert.Captures("Howdy", pattern.Consume("Howdy"));
+			ResultAssert.Fails(pattern.Consume("Goodbye"));
 
 			pattern = OneOf("Hello", "Hi", "Howdy");
-			Claim.That(pattern)
-				.Consumes("Hello", "Hello")
-				.Consumes("Hi", "Hi")
-				.Consumes("Howdy", "Howdy")
-				.FailsToConsume("Goodbye");
+			ResultAssert.Captures("Hello", pattern.Consume("Hello"));
+			ResultAssert.Captures("Hi", pattern.Consume("Hi"));
+			ResultAssert.Captures("Howdy", pattern.Consume("Howdy"));
+			ResultAssert.Fails(pattern.Consume("Goodbye"));
 
 			pattern = OneOf<Enum>();
-			Claim.That(pattern)
-				.Consumes("First", "First")
-				.Consumes("Second", "Second")
-				.Consumes("Third", "Third")
-				.FailsToConsume("Fourth");
+			ResultAssert.Captures("First", pattern.Consume("First"));
+			ResultAssert.Captures("Second", pattern.Consume("Second"));
+			ResultAssert.Captures("Third", pattern.Consume("Third"));
+			ResultAssert.Fails(pattern.Consume("Fourth"));
 		}
 
 		[Fact]
 		public void Neglect() {
 			Pattern pattern = Not("Hello".Or("Goodbye"));
-			Claim.That(pattern)
-				.Consumes("World", "Worldeater")
-				.FailsToConsume("Hello")
-				.FailsToConsume("Goodbye");
+			ResultAssert.Captures("World", pattern.Consume("Worldeater"));
+			ResultAssert.Fails(pattern.Consume("Hello"));
+			ResultAssert.Fails(pattern.Consume("Goodbye"));
 		}
 
 		[Theory]

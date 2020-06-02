@@ -1,33 +1,34 @@
 ﻿using System;
 using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
-using Defender;
 using Xunit;
 
 namespace Tests {
-	public class RangerTests : Trial {
+	public class RangerTests {
 		[Fact]
-		public void Simple_Consume() =>
-			Claim.That(Range("Hello", ';'))
-			.Consumes("Hello;", "Hello;")
-			.Consumes("Hello World;", "Hello World;");
+		public void Simple_Consume() {
+			Pattern pattern = Range("Hello", ';');
+			ResultAssert.Captures("Hello;", pattern.Consume("Hello;"));
+			ResultAssert.Captures("Hello World;", pattern.Consume("Hello World;"));
+		}
 
 		[Fact]
-		public void Simple_Neglect() =>
-			Claim.That(() => Not(Range("Hello", ";"))).Throws<PatternConstructionException>();
+		public void Simple_Neglect() => Assert.Throws<PatternConstructionException>(() => Not(Range("Hello", ";")));
 
 		[Fact]
-		public void Escaped_Consume() =>
-			Claim.That(Range("\"", "\"", "\\\""))
-			.Consumes("\"\"", "\"\"")
-			.Consumes("\"H\"", "\"H\"i")
-			.Consumes("\"Hello\"", "\"Hello\"")
-			.Consumes("\"Hello\\\"Goodbye\"", "\"Hello\\\"Goodbye\"");
+		public void Escaped_Consume() {
+			Pattern pattern = Range("\"", "\"", "\\\"");
+			ResultAssert.Captures("\"\"", pattern.Consume("\"\""));
+			ResultAssert.Captures("\"H\"", pattern.Consume("\"H\"i"));
+			ResultAssert.Captures("\"Hello\"", pattern.Consume("\"Hello\""));
+			ResultAssert.Captures("\"Hello\\\"Goodbye\"", pattern.Consume("\"Hello\\\"Goodbye\""));
+		}
 
 		[Fact]
-		public void Nested_Consume() =>
-			Claim.That(NestedRange("if", "end if"))
-			.Consumes("if\nif\nend if\nbacon\nend if", "if\nif\nend if\nbacon\nend if\nfoobar")
-			.FailsToConsume("if\nif\nend if\nbacon\nfoobar");
+		public void Nested_Consume() {
+			Pattern pattern = NestedRange("if", "end if");
+			ResultAssert.Captures("if\nif\nend if\nbacon\nend if", pattern.Consume("if\nif\nend if\nbacon\nend if\nfoobar"));
+			ResultAssert.Fails(pattern.Consume("if\nif\nend if\nbacon\nfoobar"));
+		}
 	}
 }

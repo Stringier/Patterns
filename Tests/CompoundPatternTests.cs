@@ -5,62 +5,54 @@ using Defender;
 using Xunit;
 
 namespace Tests {
-	public class CompoundPatternTests : Trial {
+	public class CompoundPatternTests {
 		[Fact]
 		public void Alternate_Repeater() {
 			Pattern pattern = "Hi".Or("Bye").Then(' ').Repeat(2);
-			Claim.That(pattern)
-				.Consumes("Hi Bye ", "Hi Bye Hi ")
-				.Consumes("Hi Hi ", "Hi Hi Hi ")
-				.Consumes("Hi Hi ", "Hi Hi ")
-				.FailsToConsume("Hi Hi");
+			ResultAssert.Captures("Hi Bye ", pattern.Consume("Hi Bye Hi "));
+			ResultAssert.Captures("Hi Hi ", pattern.Consume("Hi Hi Hi "));
+			ResultAssert.Captures("Hi Hi ", pattern.Consume("Hi Hi "));
+			ResultAssert.Fails(pattern.Consume("Hi Hi"));
 		}
 
 		[Fact]
 		public void Alternate_Spanner() {
 			Pattern pattern = Many(SpaceSeparator.Or('\t'));
-			Claim.That(pattern)
-				.Consumes("  \t ", "  \t ")
-				.Consumes("  \t ", "  \t hi");
+			ResultAssert.Captures("  \t ", pattern.Consume("  \t "));
+			ResultAssert.Captures("  \t ", pattern.Consume("  \t hi"));
 		}
 
 		[Fact]
 		public void Double_Negator() {
 			Pattern pattern = Not(Not("Hello"));
-			Claim.That(pattern)
-				.Consumes("Hello", "Hello")
-				.FailsToConsume("World");
+			ResultAssert.Captures("Hello", pattern.Consume("Hello"));
+			ResultAssert.Fails(pattern.Consume("World"));
 		}
 
 		[Fact]
 		public void Double_Optor() {
 			Pattern pattern = Maybe(Maybe("Hello"));
-			Claim.That(pattern)
-				.Consumes("Hello", "Hello")
-				.Consumes("", "World");
+			ResultAssert.Captures("Hello", pattern.Consume("Hello"));
+			ResultAssert.Captures("", pattern.Consume("World"));
 		}
 
 		[Fact]
 		public void Double_Spanner() {
 			Pattern pattern = Many(Many("hi"));
-			Claim.That(pattern)
-				.Consumes("hi", "hi")
-				.Consumes("hihi", "hihi")
-				.Consumes("hihihi", "hihihi")
-				.FailsToConsume("");
+			ResultAssert.Captures("hi", pattern.Consume("hi"));
+			ResultAssert.Captures("hihi", pattern.Consume("hihi"));
+			ResultAssert.Captures("hihihi", pattern.Consume("hihihi"));
+			ResultAssert.Fails(pattern.Consume(""));
 		}
 
 		[Fact]
 		public void Optional_Spanner() {
 			Pattern pattern = Maybe(Many(' '));
-			Claim.That(pattern)
-				.Consumes("  ", "  Hello")
-				.Consumes("", "Hello");
+			ResultAssert.Captures("  ", pattern.Consume("  Hello"));
+			ResultAssert.Captures("", pattern.Consume("Hello"));
 		}
 
 		[Fact]
-		public void Spaning_Optor() {
-			Claim.That(() => Many(Maybe(' '))).Throws<PatternConstructionException>();
-		}
+		public void Spaning_Optor() => Assert.Throws<PatternConstructionException>(() => Many(Maybe(' ')));
 	}
 }

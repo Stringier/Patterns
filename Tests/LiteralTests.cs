@@ -3,7 +3,6 @@ using System.Text;
 using Stringier;
 using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
-using Defender;
 using Xunit;
 using FParsec.CSharp;
 using Pidgin;
@@ -12,7 +11,7 @@ using Benchmarks;
 using static Benchmarks.LiteralBenchmarks;
 
 namespace Tests {
-	public class LiteralTests : Trial {
+	public class LiteralTests {
 		[Fact]
 		public void Constructor() {
 			Pattern _ = 'h';
@@ -21,10 +20,9 @@ namespace Tests {
 
 		[Fact]
 		public void Consume_String_FromString() {
-			Claim.That("Hello")
-				.Consumes("Hello", "Hello World")
-				.FailsToConsume("Hell")
-				.FailsToConsume("Bacon");
+			ResultAssert.Captures("Hello", "Hello".Consume("Hello World"));
+			ResultAssert.Fails("Hello".Consume("Hell"));
+			ResultAssert.Fails("Hello".Consume("Bacon"));
 		}
 
 		[Fact]
@@ -33,41 +31,38 @@ namespace Tests {
 			Pattern space = ' ';
 			Pattern world = "World";
 			Source source = new Source("Hello World");
-			Claim.That(hello).Consumes("Hello", ref source);
-			Claim.That(space).Consumes(" ", ref source);
-			Claim.That(world).Consumes("World", ref source);
+			ResultAssert.Captures("Hello", hello.Consume(ref source));
+			ResultAssert.Captures(" ", space.Consume(ref source));
+			ResultAssert.Captures("World", world.Consume(ref source));
 			source = new Source("Hello World");
-			Claim.That(hello.Then(space).Then(world)).Consumes("Hello World", ref source);
+			ResultAssert.Captures("Hello World", (hello & space & world).Consume(ref source));
 		}
 
 		[Fact]
 		public void Consume_Rune_FromSource() {
 			Source source = new Source("hello");
-			Pattern pattern = new Rune('h');
-			Claim.That(pattern).Consumes("h", ref source);
-			Claim.That("ello").Consumes("ello", ref source);
+			ResultAssert.Captures("h", new Rune('h').Consume(ref source));
+			ResultAssert.Captures("ello", "ello".Consume(ref source));
 			source = new Source("𝄞abc");
-			pattern = new Rune(0x1D11E);
-			Claim.That(pattern).Consumes("𝄞", ref source);
-			Claim.That("abc").Consumes("abc", ref source);
+			ResultAssert.Captures("𝄞", new Rune(0x1D11E).Consume(ref source));
+			ResultAssert.Captures("abc", "abc".Consume(ref source));
 		}
 
 		[Fact]
 		public void Consume_Insensitive() {
 			Pattern pattern = "Hello".With(Case.Insensitive).Then(' '.With(Case.Insensitive)).Then("World".With(Case.Insensitive));
-			Claim.That(pattern)
-				.Consumes("HELLO WORLD", "HELLO WORLD")
-				.Consumes("hello world", "hello world");
+			ResultAssert.Captures("HELLO WORLD", pattern.Consume("HELLO WORLD"));
+			ResultAssert.Captures("hello world", pattern.Consume("hello world"));
 		}
 
 		[Fact]
 		public void Neglect() {
-			Claim.That(Not("Hello"))
-				.Consumes("Oh no", "Oh no!")
-				.Consumes("Oh no", "Oh no?")
-				.FailsToConsume("Hello")
-				.FailsToConsume("Hello!")
-				.FailsToConsume("Hello.");
+			Pattern pattern = Not("Hello");
+			ResultAssert.Captures("Oh no", pattern.Consume("Oh no!"));
+			ResultAssert.Captures("Oh no", pattern.Consume("Oh no?"));
+			ResultAssert.Fails(pattern.Consume("Hello"));
+			ResultAssert.Fails(pattern.Consume("Hello!"));
+			ResultAssert.Fails(pattern.Consume("Hello."));
 		}
 
 		[Theory]

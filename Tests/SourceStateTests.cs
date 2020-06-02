@@ -1,18 +1,17 @@
 ﻿using System;
 using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
-using Defender;
 using Xunit;
 
 namespace Tests {
-	public class SourceStateTests : Trial {
+	public class SourceStateTests {
 		[Fact]
 		public void StoreAndRestore() {
 			Source source = new Source("hello world");
 			SourceState state = source.Store();
-			Claim.That("hello").Consumes("hello", ref source);
+			ResultAssert.Captures("hello", "hello".Consume(ref source));
 			source.Restore(state);
-			Claim.That("hello").Consumes("hello", ref source);
+			ResultAssert.Captures("hello", "hello".Consume(ref source));
 		}
 	}
 }

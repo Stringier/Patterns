@@ -3,30 +3,31 @@ using System.Collections.Generic;
 using Stringier;
 using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
-using Defender;
 using Xunit;
 using Pidgin;
 using Sprache;
 using static Benchmarks.RepeaterBenchmarks;
 
 namespace Tests {
-	public class RepeaterTests : Trial {
+	public class RepeaterTests {
 		// We use .AsPattern() and * instead of .Repeat() here because we had to import both Stringier and Stringier.Patterns which both have .Repeat() overloads which do different things.
 
 		[Fact]
-		public void Consume() =>
-			Claim.That("Hi! ".AsPattern() * 2)
-			.Consumes("Hi! Hi! ", "Hi! Hi! ")
-			.Consumes("Hi! Hi! ", "Hi! Hi! Hi!")
-			.FailsToConsume("Hi! Bye! ");
+		public void Consume() {
+			Pattern pattern = "Hi! ".AsPattern() * 2;
+			ResultAssert.Captures("Hi! Hi! ", pattern.Consume("Hi! Hi! "));
+			ResultAssert.Captures("Hi! Hi! ", pattern.Consume("Hi! Hi! Hi!"));
+			ResultAssert.Fails(pattern.Consume("Hi! Bye! "));
+		}
 
 		[Fact]
-		public void Neglect() =>
-			Claim.That(Not("Hi! ".AsPattern() * 2))
-			.Consumes("Oh! No! ", "Oh! No! ")
-			.Consumes("Oh? Hi! ", "Oh? Hi! ")
-			.Consumes("Hi! Ho! ", "Hi! Ho! ")
-			.FailsToConsume("H! Hi! ");
+		public void Neglect() {
+			Pattern pattern = Not("Hi! ".AsPattern() * 2);
+			ResultAssert.Captures("Oh! No! ", pattern.Consume("Oh! No! "));
+			ResultAssert.Captures("Oh? Hi! ", pattern.Consume("Oh? Hi! "));
+			ResultAssert.Captures("Hi! Ho! ", pattern.Consume("Hi! Ho! "));
+			ResultAssert.Fails(pattern.Consume("H! Hi! "));
+		}
 
 		[Theory]
 		[InlineData("Hi!", false, null)]

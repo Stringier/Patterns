@@ -7,6 +7,9 @@ using Defender;
 using System.Collections.Generic;
 
 namespace Stringier.Patterns {
+	/// <summary>
+	/// Provides <see cref="Pattern"/> related extensions to <see cref="String"/>.
+	/// </summary>
 	public static class StringExtensions {
 		/// <summary>
 		/// Get the <paramref name="string"/> as a <see cref="Pattern"/>.

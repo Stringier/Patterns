@@ -1,11 +1,10 @@
 ﻿using System;
 using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
-using Defender;
 using Xunit;
 
 namespace Tests {
-	public class CaptureTests : Trial {
+	public class CaptureTests {
 		[Fact]
 		public void Constructor() => 'a'.Or('b').Or('c').Capture(out Capture capture);
 
@@ -13,19 +12,17 @@ namespace Tests {
 		public void Consume() {
 			Capture capture;
 			Pattern pattern = 'a'.Or('b').Or('c').Capture(out capture);
-			Claim.That(pattern).Consumes("a", "a");
-			Claim.That(capture).Captures("a");
+			ResultAssert.Captures("a", pattern.Consume("a"));
+			CaptureAssert.Captures("a", capture);
 
 			pattern = 'a'.Or('b').Or('c').Capture(out capture).Then('!');
-			Claim.That(pattern)
-				.FailsToConsume("a")
-				.Consumes("a!", "a!");
-			Claim.That(capture).Captures("a");
+			ResultAssert.Fails(pattern.Consume("a")); 
+			ResultAssert.Captures("a!", pattern.Consume("a!"));
+			CaptureAssert.Captures("a", capture);
 
 			pattern = 'a'.Or('b').Or('c').Capture(out capture).Then(',').Then(capture);
-			Claim.That(pattern)
-				.Consumes("b,b", "b,b")
-				.FailsToConsume("b,a");
+			ResultAssert.Captures("b,b", pattern.Consume("b,b"));
+			ResultAssert.Fails(pattern.Consume("b,a"));
 		}
 	}
 }

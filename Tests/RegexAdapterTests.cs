@@ -2,26 +2,24 @@
 using System.Text.RegularExpressions;
 using Stringier.Patterns;
 using static Stringier.Patterns.Pattern;
-using Defender;
 using Xunit;
 
 namespace Tests {
-	public class RegexAdapterTests : Trial {
+	public class RegexAdapterTests {
 		[Fact]
 		public void Converter() {
 			_ = new Regex("^hello").AsPattern();
 			_ = new Regex("^hello$").AsPattern();
-			Claim.That(() => new Regex("hello").AsPattern())
-				.Throws<PatternConstructionException>();
-			Claim.That(() => new Regex("hello$").AsPattern())
-				.Throws<PatternConstructionException>();
+			Assert.Throws<PatternConstructionException>(() => new Regex("hello").AsPattern());
+			Assert.Throws<PatternConstructionException>(() => new Regex("hello$").AsPattern());
 		}
 
 		[Fact]
-		public void Consume() =>
-			Claim.That(new Regex("^hello").AsPattern())
-			.Consumes("hello", "hello")
-			.Consumes("hello", "hello world")
-			.FailsToConsume("hel");
+		public void Consume() {
+			Pattern pattern = new Regex("^hello").AsPattern();
+			ResultAssert.Captures("hello", pattern.Consume("hello"));
+			ResultAssert.Captures("hello", pattern.Consume("hello world"));
+			ResultAssert.Fails(pattern.Consume("hel"));
+		}
 	}
 }

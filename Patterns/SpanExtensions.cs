@@ -7,6 +7,9 @@ using Defender;
 using System.Collections.Generic;
 
 namespace Stringier.Patterns {
+	/// <summary>
+	/// Provides <see cref="Pattern"/> related extensions to <see cref="ReadOnlySpan{T}"/> of <see cref="Char"/>.
+	/// </summary>
 	public static class SpanExtensions {
 		/// <summary>
 		/// Get the <paramref name="span"/> as a <see cref="Pattern"/>.
