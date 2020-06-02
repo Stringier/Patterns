@@ -9,13 +9,13 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<Authors>Patrick Kelly</Authors>
-		<Copyright>2019</Copyright>
+		<Copyright>2020</Copyright>
 		<PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/Entomy/Stringier</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Entomy/Stringier</PackageProjectUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>stringier, mstest, test, testing, unit test, unit tests, unit testing</PackageTags>
-		<Version>3.0.0</Version>
+		<Version>3.1.0</Version>
 		<Description>Provides extensions to mstest for unit testing Patterns</Description>
 		<PackageId>Stringier.Patterns.MSTest</PackageId>
 		<Product>Stringier</Product>
